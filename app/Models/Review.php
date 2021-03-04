@@ -8,4 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 class Review extends Model
 {
     use HasFactory;
+
+    public function lawyer()
+    {
+        return $this->belongsTo(Lawyer::class, 'lawyer_id', 'id', 'id');
+    }
 }

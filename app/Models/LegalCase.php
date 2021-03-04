@@ -8,4 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 class LegalCase extends Model
 {
     use HasFactory;
+
+    protected $fillable = ['name', 'description', 'result', 'lawyer_id'];
 }

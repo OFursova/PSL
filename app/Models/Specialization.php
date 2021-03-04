@@ -8,4 +8,14 @@ use Illuminate\Database\Eloquent\Model;
 class Specialization extends Model
 {
     use HasFactory;
+
+    public function lawyersSpec()
+    {
+        return $this->belongsToMany(Lawyer::class, 'lawyers_specializations');
+    }
+
+    public function casesSpec()
+    {
+        return $this->belongsToMany(LegalCase::class, 'cases_specializations');
+    }
 }
