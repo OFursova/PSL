@@ -21,6 +21,9 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'avatar',
+        'phone',
+        'address'
     ];
 
     /**
@@ -41,4 +44,36 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function roles()
+    {
+        return $this->belongsToMany(Role::class, 'users_roles');
+    }
+    public function permissions()
+    {
+        return $this->belongsToMany(Permission::class, 'users_permissions');
+    }
+    public function hasRole($role)
+    {
+        return $this->roles->contains('slug', $role);
+    }
+    public function hasPermission($permission)
+    {
+        return $this->permissions->contains('slug', $permission);
+    }
+    public function cases()
+    {
+        return $this->belongsToMany(LegalCase::class, 'users_cases');
+    }
+    public function specialization()
+    {
+        if ($this->roles->contains('slug', 'lawyer')) {
+            return $this->belongsToMany(Specialization::class, 'lawyers_specializations');
+        }
+    }
+
+    public function getImgAttribute($value)
+    {
+       return $value ? $value : '/images/no_image.jpg';
+    }
 }

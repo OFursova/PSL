@@ -11,11 +11,15 @@ class Specialization extends Model
 
     public function lawyersSpec()
     {
+        if ($this->roles->contains('slug', 'lawyer')) {
         return $this->belongsToMany(Lawyer::class, 'lawyers_specializations');
+        }
     }
 
     public function casesSpec()
     {
+        if ($this->roles->contains('slug', 'lawyer')) {
         return $this->belongsToMany(LegalCase::class, 'cases_specializations');
+        }
     }
 }

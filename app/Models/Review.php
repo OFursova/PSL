@@ -9,8 +9,8 @@ class Review extends Model
 {
     use HasFactory;
 
-    public function lawyer()
-    {
-        return $this->belongsTo(Lawyer::class, 'lawyer_id', 'id', 'id');
-    }
+    // public function lawyer()
+    // {
+    //     return $this->belongsTo(Lawyer::class, 'lawyer_id', 'id', 'id');
+    // }
 }

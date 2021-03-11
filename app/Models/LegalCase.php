@@ -9,5 +9,11 @@ class LegalCase extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name', 'description', 'result', 'lawyer_id'];
+    protected $fillable = ['name', 'slug', 'description', 'start', 'end', 'result'];
+
+    public function users()
+    {
+        return $this->belongsToMany(User::class, 'users_cases');
+    }
+
 }
