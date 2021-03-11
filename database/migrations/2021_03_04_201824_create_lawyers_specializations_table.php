@@ -14,8 +14,11 @@ class CreateLawyersSpecializationsTable extends Migration
     public function up()
     {
         Schema::create('lawyers_specializations', function (Blueprint $table) {
-            $table->id();
-            $table->timestamps();
+            $table->unsignedBigInteger('user_id');
+            $table->unsignedBigInteger('spec_id');
+
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('spec_id')->references('id')->on('specializations')->onDelete('cascade');
         });
     }
 

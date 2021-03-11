@@ -14,8 +14,11 @@ class CreateCasesSpecializationsTable extends Migration
     public function up()
     {
         Schema::create('cases_specializations', function (Blueprint $table) {
-            $table->id();
-            $table->timestamps();
+            $table->unsignedBigInteger('case_id');
+            $table->unsignedBigInteger('spec_id');
+
+            $table->foreign('case_id')->references('id')->on('legal_cases')->onDelete('cascade');
+            $table->foreign('spec_id')->references('id')->on('specializations')->onDelete('cascade');
         });
     }
 

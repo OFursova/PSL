@@ -15,7 +15,14 @@ class CreateLegalCasesTable extends Migration
     {
         Schema::create('legal_cases', function (Blueprint $table) {
             $table->id();
+            $table->string('name');
+            $table->string('slug')->unique();
+            $table->text('description');
+            $table->date('start')->nullable();
+            $table->date('end')->nullable();
+            $table->boolean('result'); // 0 - lost; 1 - won
             $table->timestamps();
+            
         });
     }
 
