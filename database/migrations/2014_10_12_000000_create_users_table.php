@@ -23,7 +23,9 @@ class CreateUsersTable extends Migration
             $table->string('avatar')->nullable();
             $table->string('phone')->nullable();
             $table->string('address')->nullable();
+            $table->unsignedBigInteger('role_id')->nullable();
             $table->timestamps();
+            $table->foreign('role_id')->references('id')->on('roles')->onDelete('set null');
         });
     }
 

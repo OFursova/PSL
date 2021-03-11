@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Hash;
 
 class DatabaseSeeder extends Seeder
 {
@@ -14,21 +15,6 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        // DB::table('users')->insert([
-        //     ['name' => 'Admin',
-        //     'email' => 'admin@gmail.com',
-        //     'password' => Hash::make('admin123'),
-        //     'phone' => '(050)5050505'],
-        //     ['name' => 'Harvey Specter',
-        //     'email' => 'lawyer@gmail.com',
-        //     'password' => Hash::make('demodemo'),
-        //     'phone' => '(050)0505051'],
-        //     ['name' => 'Demo Client',
-        //     'email' => 'demo@gmail.com',
-        //     'password' => Hash::make('demodemo'),
-        //     'phone' => '(050)0505050'],
-        // ]);
-
         DB::table('roles')->insert([
             ['name' => 'admin',
             'slug' => 'admin'],
@@ -36,6 +22,24 @@ class DatabaseSeeder extends Seeder
             'slug' => 'lawyer'],
             ['name' => 'client',
             'slug' => 'client'],
+        ]);
+
+        DB::table('users')->insert([
+            ['name' => 'Admin',
+            'email' => 'admin@gmail.com',
+            'password' => Hash::make('admin123'),
+            'phone' => '(050)5050505',
+            'role_id' => 1,],
+            ['name' => 'Harvey Specter',
+            'email' => 'lawyer@gmail.com',
+            'password' => Hash::make('demodemo'),
+            'phone' => '(050)0505051',
+            'role_id' => 2,],
+            ['name' => 'Demo Client',
+            'email' => 'demo@gmail.com',
+            'password' => Hash::make('demodemo'),
+            'phone' => '(050)0505050',
+            'role_id' => 3,],
         ]);
 
         DB::table('permissions')->insert([
@@ -74,15 +78,6 @@ class DatabaseSeeder extends Seeder
             'permission_id' => 2,],
             ['role_id' => 3,
             'permission_id' => 5,],
-        ]);
-
-        DB::table('users_roles')->insert([
-            ['user_id' => 1,
-            'role_id' => 1,],
-            ['user_id' => 2,
-            'role_id' => 2,],
-            ['user_id' => 3,
-            'role_id' => 3,],
         ]);
 
         DB::table('specializations')->insert([
