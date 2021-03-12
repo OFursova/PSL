@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Lawyer;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
@@ -29,7 +30,9 @@ class HomeController extends Controller
 
     public function test()
     {
-        dd(Lawyer::all());
+        $user = User::find(6)->roles;
+        //$user = Lawyer::firstOrFail()->attachments;
+        dd($user);
         //return view('test');
     }
 }

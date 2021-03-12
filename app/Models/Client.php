@@ -2,12 +2,13 @@
 
 namespace App\Models;
 
-use App\Scopes\LawyerScope;
+use App\Scopes\ClientScope;
 use App\Traits\AttachCases;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Lawyer extends User
+
+class Client extends User
 {
     use AttachCases, HasFactory;
 
@@ -18,6 +19,7 @@ class Lawyer extends User
      */
     protected static function booted()
     {
-        static::addGlobalScope(new LawyerScope);
+        static::addGlobalScope(new ClientScope);
     }
+
 }
