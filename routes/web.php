@@ -25,3 +25,10 @@ Route::get('/dashboard', function () {
 })->middleware(['auth'])->name('dashboard');
 
 require __DIR__.'/auth.php';
+
+Route::middleware(['auth', 'role:admin'])->prefix('admin')->group(function(){
+    Route::get('/', [AdminController::class, 'index']);
+    Route::resource('/roles', RoleController::class);
+    Route::resource('/permissions', PermissionController::class);
+    Route::resource('/lawyers', LawyerController::class);
+});
