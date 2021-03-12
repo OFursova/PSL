@@ -18,7 +18,7 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/test', [HomeController::class, 'test']);
+Route::get('/test', [MainController::class, 'test']);
 
 Route::get('/dashboard', function () {
     return view('dashboard');

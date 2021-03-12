@@ -6,7 +6,7 @@ use App\Models\Lawyer;
 use App\Models\User;
 use Illuminate\Http\Request;
 
-class HomeController extends Controller
+class MainController extends Controller
 {
     /**
      * Create a new controller instance.
@@ -35,5 +35,35 @@ class HomeController extends Controller
         $user = Lawyer::firstOrFail()->specializations->pluck('name');
         dd($user);
         //return view('test');
+    }
+
+    /**
+     * Show the About Us page.
+     *
+     * @return \Illuminate\Contracts\Support\Renderable
+     */
+    public function about()
+    {
+        # code...
+    }
+
+    /**
+     * Show the Contact Us page.
+     *
+     * @return \Illuminate\Contracts\Support\Renderable
+     */
+    public function contact()
+    {
+        # code...
+    }
+
+    /**
+     * Show the Team page with list of partners and lawyers.
+     *
+     * @return \Illuminate\Contracts\Support\Renderable
+     */
+    public function team()
+    {
+        # code...
     }
 }
