@@ -3,13 +3,13 @@
 namespace App\Models;
 
 use App\Scopes\LawyerScope;
-use App\Traits\AttachCases;
+use App\Traits\Attachable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Lawyer extends User
 {
-    use AttachCases, HasFactory;
+    use Attachable, HasFactory;
 
     /**
      * The "booted" method of the model.
@@ -19,5 +19,15 @@ class Lawyer extends User
     protected static function booted()
     {
         static::addGlobalScope(new LawyerScope);
+    }
+
+    // public function specialization()
+    // {
+    //     return $this->belongsToMany(Specialization::class, 'lawyers_specializations');
+    // }
+
+    public function specializations()
+    {
+        return $this->morphToMany(Specialization::class, 'attachable', 'specializations_attachments');
     }
 }

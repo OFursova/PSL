@@ -3,14 +3,14 @@
 namespace App\Models;
 
 use App\Scopes\ClientScope;
-use App\Traits\AttachCases;
+use App\Traits\Attachable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 
 class Client extends User
 {
-    use AttachCases, HasFactory;
+    use Attachable, HasFactory;
 
     /**
      * The "booted" method of the model.

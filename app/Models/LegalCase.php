@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Traits\Attachable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -9,7 +10,7 @@ use Illuminate\Database\Eloquent\Relations\MorphToMany;
 
 class LegalCase extends Model
 {
-    use HasFactory;
+    use Attachable, HasFactory;
 
     protected $fillable = ['name', 'slug', 'description', 'start', 'end', 'result'];
 
@@ -28,4 +29,18 @@ class LegalCase extends Model
     {
         return $this->hasMany(CasesAttachment::class);
     }
+
+    // public function specialization()
+    // {
+    //     return $this->belongsToMany(Specialization::class, 'cases_specializations');
+    // }
+
+    public function specializations()
+    {
+        return $this->morphToMany(Specialization::class, 'attachable', 'specializations_attachments');
+    }
+
+    /* //default attributes
+    protected $attributes = ['key' => 'value',];
+    */
 }

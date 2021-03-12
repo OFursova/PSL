@@ -30,8 +30,9 @@ class HomeController extends Controller
 
     public function test()
     {
-        $user = User::find(6)->roles;
+        //$user = User::find(6)->roles;
         //$user = Lawyer::firstOrFail()->attachments;
+        $user = Lawyer::firstOrFail()->specializations->pluck('name');
         dd($user);
         //return view('test');
     }

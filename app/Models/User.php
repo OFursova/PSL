@@ -49,16 +49,10 @@ class User extends Authenticatable
 
     protected $table = 'users';
 
-    public function cases()
-    {
-        return $this->belongsToMany(LegalCase::class, 'users_cases');
-    }
-    public function specialization()
-    {
-        if ($this->roles->contains('slug', 'lawyer')) {
-            return $this->belongsToMany(Specialization::class, 'lawyers_specializations');
-        }
-    }
+    // public function cases()
+    // {
+    //     return $this->belongsToMany(LegalCase::class, 'users_cases');
+    // } using trait inspite
 
     public function getImgAttribute($value)
     {
