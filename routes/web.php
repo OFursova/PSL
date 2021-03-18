@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CaseController;
 use App\Http\Controllers\HomeController;
 use App\Models\LegalCase;
 use Illuminate\Support\Facades\Route;
@@ -15,20 +16,21 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
-
-Route::get('/test', [MainController::class, 'test']);
-Route::get('/case', function () {
-    return $case = LegalCase::factory()->make();
-});
-
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth'])->name('dashboard');
-
 require __DIR__.'/auth.php';
+
+/* ===== RESOURCES FOR GUESTS ===== */
+
+Route::resource('/cases', CaseController::class); // later ->only(['index', 'show']);
+
+/* ===== RESOURCES FOR REGISTERED USERS ===== */
+
+// Route::middleware(['auth'])->group(function(){
+//     Route::resource('/cases', CaseController::class);
+// });
+
+
+
+/* ===== ADMIN PANEL ===== */
 
 Route::middleware(['auth', 'role:admin'])->prefix('admin')->group(function(){
     Route::get('/', [AdminController::class, 'index']);
@@ -36,3 +38,19 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->group(function(){
     Route::resource('/permissions', PermissionController::class);
     Route::resource('/lawyers', LawyerController::class);
 });
+
+/* ====== TESTING ====== */
+
+Route::get('/', function () {
+    return view('welcome');
+});
+
+Route::get('/dashboard', function () {
+    return view('dashboard');
+})->middleware(['auth'])->name('dashboard');
+
+// Route::get('/test', [MainController::class, 'test']);
+
+// Route::get('/case', function () {
+//     return $case = LegalCase::factory()->make();
+// });

@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreLegalCaseRequest;
+use App\Http\Requests\UpdateLegalCaseRequest;
 use App\Models\LegalCase;
 use Illuminate\Http\Request;
 
@@ -14,7 +16,10 @@ class CaseController extends Controller
      */
     public function index()
     {
-        // 
+        $cases = LegalCase::latest()->get();
+        $title = 'Legal Cases';
+        //return $cases;
+        return view('cases.index', compact('cases', 'title'));
     }
 
     /**
@@ -24,7 +29,7 @@ class CaseController extends Controller
      */
     public function create()
     {
-        //
+        return view('cases.create');
     }
 
     /**
@@ -33,9 +38,11 @@ class CaseController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreLegalCaseRequest $request)
     {
-        //
+        $validData = $request->validated;
+        LegalCase::create($validData);
+        return redirect('/cases');
     }
 
     /**
@@ -46,7 +53,8 @@ class CaseController extends Controller
      */
     public function show(LegalCase $legalCase)
     {
-        //
+        //$case = LegalCase::findOrFail($legalCase->id);
+        return view('cases.show', compact('legalCase'));
     }
 
     /**
@@ -57,7 +65,8 @@ class CaseController extends Controller
      */
     public function edit(LegalCase $legalCase)
     {
-        //
+        //$case = LagalCase::findOrFail($legalCase->id);
+        return view('cases.edit', compact('legalCase'));
     }
 
     /**
@@ -67,9 +76,11 @@ class CaseController extends Controller
      * @param  \App\Models\LegalCase  $legalCase
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, LegalCase $legalCase)
+    public function update(UpdateLegalCaseRequest $request, LegalCase $legalCase)
     {
-        //
+        $validData = $request->validated;
+        $legalCase->update($validData);
+        return redirect('/cases');
     }
 
     /**
@@ -80,6 +91,7 @@ class CaseController extends Controller
      */
     public function destroy(LegalCase $legalCase)
     {
-        //
+        $legalCase->delete();
+        return redirect('/cases');
     }
 }

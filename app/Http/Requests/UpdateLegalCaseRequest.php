@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreLegalCaseRequest extends FormRequest
+class UpdateLegalCaseRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -13,7 +13,7 @@ class StoreLegalCaseRequest extends FormRequest
      */
     public function authorize()
     {
-        return true;
+        return false;
     }
 
     /**
@@ -25,7 +25,7 @@ class StoreLegalCaseRequest extends FormRequest
     {
         return [
             'name' => 'required|string',
-            'slug' => 'required|string|unique',
+            'slug' => 'required|string|unique:legal_cases,slug,'.$this->id, //Rule::unique('transports','license_plate')->ignore($this->transport->id)], /*unique:table,column,except,idColumn */
             'description' => 'required',
             'start' => 'nullable|date_format:Y-m-d',
             'end' => 'nullable|date_format:Y-m-d',
