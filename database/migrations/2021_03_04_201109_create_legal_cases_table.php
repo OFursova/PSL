@@ -20,7 +20,7 @@ class CreateLegalCasesTable extends Migration
             $table->text('description');
             $table->date('start')->nullable();
             $table->date('end')->nullable();
-            $table->boolean('result'); // 0 - lost; 1 - won
+            $table->boolean('result')->nullable(); // 0 - lost; 1 - won
             $table->timestamps();
             
         });

@@ -40,6 +40,11 @@ class LegalCase extends Model
         return $this->morphToMany(Specialization::class, 'attachable', 'specializations_attachments');
     }
 
+    public function test_case()
+    {
+        $case = LegalCase::factory()->make();
+    }
+
     /* //default attributes
     protected $attributes = ['key' => 'value',];
     */

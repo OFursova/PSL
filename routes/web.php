@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\HomeController;
+use App\Models\LegalCase;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -19,6 +20,9 @@ Route::get('/', function () {
 });
 
 Route::get('/test', [MainController::class, 'test']);
+Route::get('/case', function () {
+    return $case = LegalCase::factory()->make();
+});
 
 Route::get('/dashboard', function () {
     return view('dashboard');
