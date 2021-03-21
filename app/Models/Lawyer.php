@@ -21,13 +21,8 @@ class Lawyer extends User
         static::addGlobalScope(new LawyerScope);
     }
 
-    // public function specialization()
-    // {
-    //     return $this->belongsToMany(Specialization::class, 'lawyers_specializations');
-    // }
-
-    public function specializations()
+    public function specs()
     {
-        return $this->morphToMany(Specialization::class, 'attachable', 'specializations_attachments');
+        return $this->morphToMany(Spec::class, 'specable');
     }
 }

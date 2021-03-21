@@ -9,4 +9,9 @@ class SpecializationsAttachment extends Model
 {
     protected $table = 'specializations_attachments';
     protected $fillable = ['specialization_id', 'attachable_id', 'attachable_type'];
+
+    public function related()
+    {
+        return $this->morphTo();
+    }
 }

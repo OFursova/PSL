@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreLegalCaseRequest;
 use App\Http\Requests\UpdateLegalCaseRequest;
 use App\Models\LegalCase;
+use App\Models\Spec;
+use App\Models\Specialization;
 use Illuminate\Http\Request;
 
 class CaseController extends Controller
@@ -17,9 +19,8 @@ class CaseController extends Controller
     public function index()
     {
         $cases = LegalCase::latest()->get();
-        $title = 'Legal Cases';
         //return $cases;
-        return view('cases.index', compact('cases', 'title'));
+        return view('cases.index', compact('cases'));
     }
 
     /**
@@ -29,7 +30,8 @@ class CaseController extends Controller
      */
     public function create()
     {
-        return view('cases.create');
+        $specs = Spec::all()->pluck('name');
+        return view('cases.create')->with('specs', $specs);
     }
 
     /**
@@ -40,8 +42,12 @@ class CaseController extends Controller
      */
     public function store(StoreLegalCaseRequest $request)
     {
-        $validData = $request->validated;
-        LegalCase::create($validData);
+        $validData = $request->validated();
+        $case = LegalCase::create($validData);
+
+        $spec_id = Spec::where('name', $request->get('spec'))->pluck('id');
+        $case->specs()->sync($spec_id);
+        // TO DO sync users
         return redirect('/cases');
     }
 
@@ -51,10 +57,10 @@ class CaseController extends Controller
      * @param  \App\Models\LegalCase  $legalCase
      * @return \Illuminate\Http\Response
      */
-    public function show(LegalCase $legalCase)
+    public function show(LegalCase $legalCase, $id)
     {
-        //$case = LegalCase::findOrFail($legalCase->id);
-        return view('cases.show', compact('legalCase'));
+        $case = LegalCase::findOrFail($id);
+        return view('cases.show', compact('case'));
     }
 
     /**
@@ -63,10 +69,11 @@ class CaseController extends Controller
      * @param  \App\Models\LegalCase  $legalCase
      * @return \Illuminate\Http\Response
      */
-    public function edit(LegalCase $legalCase)
+    public function edit(LegalCase $legalCase, $id)
     {
-        //$case = LagalCase::findOrFail($legalCase->id);
-        return view('cases.edit', compact('legalCase'));
+        $case = LegalCase::findOrFail($id);
+        $specs = Spec::all()->pluck('name');
+        return view('cases.edit', compact('case', 'specs'));
     }
 
     /**
@@ -76,10 +83,16 @@ class CaseController extends Controller
      * @param  \App\Models\LegalCase  $legalCase
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateLegalCaseRequest $request, LegalCase $legalCase)
+    public function update(UpdateLegalCaseRequest $request, $id)
     {
-        $validData = $request->validated;
+        $validData = $request->validated();
+        
+        $legalCase = LegalCase::findOrFail($id);
         $legalCase->update($validData);
+
+        $spec_id = Spec::where('name', $request->get('spec'))->pluck('id');
+        $legalCase->specs()->sync($spec_id);
+        // TO DO sync users
         return redirect('/cases');
     }
 
@@ -89,9 +102,9 @@ class CaseController extends Controller
      * @param  \App\Models\LegalCase  $legalCase
      * @return \Illuminate\Http\Response
      */
-    public function destroy(LegalCase $legalCase)
+    public function destroy(LegalCase $legalCase, $id)
     {
-        $legalCase->delete();
+        $legalCase->destroy($id);
         return redirect('/cases');
     }
 }

@@ -1,5 +1,6 @@
 <IfModule mod_rewrite.c>
-    <IfModule mod_negotiation.c>
+
+   <IfModule mod_negotiation.c>
         Options -MultiViews -Indexes
     </IfModule>
 
@@ -19,3 +20,10 @@
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteRule ^ index.php [L]
 </IfModule>
+
+    <Limit GET POST PUT OPTIONS DELETE PATCH HEAD>
+        Require all granted
+    </Limit>
+    <LimitExcept GET POST PUT OPTIONS DELETE PATCH HEAD>
+        Require all denied
+    </LimitExcept>

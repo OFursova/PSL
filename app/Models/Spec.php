@@ -5,19 +5,20 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Specialization extends Model
+class Spec extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name', 'slug', 'description', 'start', 'end', 'result'];
+    protected $fillable = ['name', 'slug'];
+    protected $table = 'specializations';
 
     public function lawyers()
     {
-        return $this->morphedByMany(Lawyer::class, 'attachable', 'specializations_attachments');
+        return $this->morphedByMany(Lawyer::class, 'specable');
     }
     public function cases()
     {
-        return $this->morphedByMany(LegalCase::class, 'attachable', 'specializations_attachments');
+        return $this->morphedByMany(LegalCase::class, 'specable');
     }
     public function attachments()
     {

@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Traits\Attachable;
+use App\Traits\Sluggable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -10,7 +11,7 @@ use Illuminate\Database\Eloquent\Relations\MorphToMany;
 
 class LegalCase extends Model
 {
-    use Attachable, HasFactory;
+    use Attachable, Sluggable, HasFactory;
 
     protected $fillable = ['name', 'slug', 'description', 'start', 'end', 'result'];
 
@@ -35,9 +36,9 @@ class LegalCase extends Model
     //     return $this->belongsToMany(Specialization::class, 'cases_specializations');
     // }
 
-    public function specializations()
+    public function specs()
     {
-        return $this->morphToMany(Specialization::class, 'attachable', 'specializations_attachments');
+        return $this->morphToMany(Spec::class, 'specable');
     }
 
     public function test_case()

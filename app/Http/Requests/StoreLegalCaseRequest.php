@@ -24,8 +24,9 @@ class StoreLegalCaseRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required|string',
-            'slug' => 'required|string|unique',
+            'name' => 'required|string', // можно поставить проверку на уникальность здесь вместо slug
+            //'slug' => 'required|string|unique:legal_cases,slug',
+            'slug' => 'nullable',
             'description' => 'required',
             'start' => 'nullable|date_format:Y-m-d',
             'end' => 'nullable|date_format:Y-m-d',
