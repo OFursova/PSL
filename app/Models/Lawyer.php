@@ -25,4 +25,14 @@ class Lawyer extends User
     {
         return $this->morphToMany(Spec::class, 'specable');
     }
+
+    public function role()
+    {
+        return 'Lawyer';
+    }
+
+    public function position()
+    {
+        return 'Partner';
+    }
 }

@@ -3,84 +3,93 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\StoreLawyerRequest;
 use App\Models\Lawyer;
+use App\Models\Spec;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class LawyerController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
-        //
+        $lawyers = Lawyer::get();
+        //return $lawyers;
+        return view('admin.lawyers.index', compact('lawyers'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function create()
     {
-        //
+        $specs = Spec::all()->pluck('name');
+        return view('admin.lawyers.create')->with('specs', $specs);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
+    public function store(StoreLawyerRequest $request)
     {
-        //
+        $validData = $request->validated();
+        $lawyer = Lawyer::create($validData);
+
+        $spec_id = Spec::where('name', $request->get('spec'))->pluck('id');
+        $lawyer->specs()->sync($spec_id);
+        // TO DO sync cases
+        return redirect('/admin/lawyers');
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Lawyer  $lawyer
-     * @return \Illuminate\Http\Response
-     */
     public function show(Lawyer $lawyer)
     {
-        //
+        $lawyer = Lawyer::findOrFail($lawyer->id);
+        return view('admin.lawyers.show', compact('lawyer'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Lawyer  $lawyer
-     * @return \Illuminate\Http\Response
-     */
+
     public function edit(Lawyer $lawyer)
     {
-        //
+        $specs = Spec::all()->pluck('name');
+        return view('admin.lawyers.edit', compact('lawyer', 'specs'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Lawyer  $lawyer
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Lawyer $lawyer)
+    public function update(StoreLawyerRequest $request, Lawyer $lawyer)
     {
-        //
+        $validData = $request->validated();
+        
+        $allowed = ['png', 'jpg', 'jpeg', 'webp', 'jfif'];
+        $extension = $request->file('avatar')->extension();
+       
+        if (in_array($extension, $allowed)) {
+            $name = $request->file('avatar')->getClientOriginalName();
+            //$path = $request->file('avatar')->storeAs('images', $name, 'img');
+            Storage::disk('local')->putFileAs(
+                'avatars/',
+                $request->file('avatar'),
+                $name
+              );
+        }
+
+        $validData['avatar'] = 'avatars/'.$name;
+        $lawyer = Lawyer::findOrFail($lawyer->id);
+        $lawyer->update($validData);
+
+        $spec_id = Spec::where('name', $request->get('spec'))->pluck('id');
+        $lawyer->specs()->sync($spec_id);
+        // TO DO sync cases
+        return redirect('/admin/lawyers');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Lawyer  $lawyer
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Lawyer $lawyer)
+    public function destroy(Lawyer $lawyer, $id)
     {
-        //
+        $lawyer->destroy($id);
+        return redirect('/admin/lawyers');
+    }
+
+    public function getAll()
+    {
+        $lawyers = Lawyer::paginate(20);
+        return view('lawyers.index', compact('lawyers'));
+    }
+
+    public function getOne(Lawyer $lawyer, $id)
+    {
+        $lawyer = Lawyer::findOrFail($id);
+        return view('lawyers.show', compact('lawyer'));
     }
 }

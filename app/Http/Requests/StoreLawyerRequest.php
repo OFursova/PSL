@@ -13,7 +13,7 @@ class StoreLawyerRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,7 +24,14 @@ class StoreLawyerRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'name' => 'required|string',
+            //'email' => 'required|string|unique:users,email,'.$this->id,
+            'email' => 'nullable',
+            'password' => 'nullable',
+            'avatar' => 'nullable',
+            'phone' => 'nullable|string',
+            'address' => 'nullable|string',
+            'role_id' => 'nullable|numeric|exists:roles,id',
         ];
     }
 }

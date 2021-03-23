@@ -31,10 +31,7 @@ class LegalCase extends Model
         return $this->hasMany(CasesAttachment::class);
     }
 
-    // public function specialization()
-    // {
-    //     return $this->belongsToMany(Specialization::class, 'cases_specializations');
-    // }
+    
 
     public function specs()
     {

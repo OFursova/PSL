@@ -32,8 +32,13 @@
                         {{ __('Cases') }}
                     </x-nav-link>
                     <x-nav-link href="/lawyers" :active="request()->routeIs('lawyers')">
+                        {{ __('Lawyers')}}
+                    </x-nav-link>
+                    @if (Auth::user()->roles->slug == 'admin')
+                    <x-nav-link href="/admin/lawyers" :active="request()->routeIs('admin-lawyers')">
                         {{ __('Lawyers') }}
                     </x-nav-link>
+                    @endif
                 </div>
             </div>
 

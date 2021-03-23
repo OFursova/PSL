@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\LawyerController;
 use App\Http\Controllers\CaseController;
 use App\Http\Controllers\HomeController;
 use App\Models\LegalCase;
@@ -33,12 +34,12 @@ Route::middleware(['auth'])->group(function(){
 
 /* ===== ADMIN PANEL ===== */
 
-// Route::middleware(['auth', 'role:admin'])->prefix('admin')->group(function(){
-//     Route::get('/', [AdminController::class, 'index']);
-//     Route::resource('/roles', RoleController::class);
-//     Route::resource('/permissions', PermissionController::class);
-//     Route::resource('/lawyers', LawyerController::class);
-// });
+Route::middleware(['auth', 'role:admin'])->prefix('admin')->group(function(){
+    Route::get('/', [AdminController::class, 'index']);
+    Route::resource('/roles', RoleController::class);
+    Route::resource('/permissions', PermissionController::class);
+    Route::resource('/lawyers', LawyerController::class)->name('get', 'admin-lawyers');
+});
 
 /* ====== TESTING ====== */
 
