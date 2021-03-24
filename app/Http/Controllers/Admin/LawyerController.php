@@ -58,14 +58,14 @@ class LawyerController extends Controller
         if (in_array($extension, $allowed)) {
             $name = $request->file('avatar')->getClientOriginalName();
             //$path = $request->file('avatar')->storeAs('images', $name, 'img');
-            Storage::disk('local')->putFileAs(
+            Storage::disk('public')->putFileAs(
                 'avatars/',
                 $request->file('avatar'),
                 $name
               );
         }
 
-        $validData['avatar'] = 'avatars/'.$name;
+        $validData['avatar'] = 'storage/avatars/'.$name;
         $lawyer = Lawyer::findOrFail($lawyer->id);
         $lawyer->update($validData);
 

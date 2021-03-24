@@ -4,7 +4,7 @@
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
             {{ __('Case info') }}
         </h2>
-        <x-button-link href="{{asset('cases/')}}" class="ml-4 self-end bg-gray-500 hover:bg-gray-700 active:bg-gray-900">
+        <x-button-link href="/cases" class="ml-4 self-end bg-gray-500 hover:bg-gray-700 active:bg-gray-900">
             {{ __('Back') }}
         </x-button-link>
         </div>
@@ -59,7 +59,7 @@
                             <td class="py-3 px-6 text-center">
                                 <div class="flex item-center justify-center">
                                     <div class="flex item-center justify-center">
-                                        <x-button-link href="{{asset('cases/'.$case->id.'/edit')}}" class="my-3 bg-yellow-500 hover:bg-yellow-700 active:bg-yellow-900">Edit case info</x-button-link>
+                                        <x-button-link href="/cases/{{$case->id}}/edit" class="my-3 bg-yellow-500 hover:bg-yellow-700 active:bg-yellow-900">Edit case info</x-button-link>
                                     </div>
                                 </div>
                             </td>

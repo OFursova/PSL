@@ -4,7 +4,7 @@
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
             {{ __('Add new case') }}
         </h2>
-        <x-button-link href="{{asset('cases/')}}" class="ml-4 self-end bg-gray-500 hover:bg-gray-700 active:bg-gray-900">
+        <x-button-link href="/cases" class="ml-4 self-end bg-gray-500 hover:bg-gray-700 active:bg-gray-900">
             {{ __('Back') }}
         </x-button-link>
         </div>
@@ -54,7 +54,7 @@
         <div>
             <x-label for="spec" :value="__('Specialization:')" />
 
-            <x-select id="spec" name="spec" autocomplete="specialization" :collection="$specs" :selected="null"/>
+            <x-select id="spec" name="spec" autocomplete="specialization" :collection="$specs" />
         </div>
 
         <!-- Attach documents -->

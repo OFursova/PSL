@@ -6,7 +6,7 @@
         </h2>
         {{-- only for lawyers and admin --}}
         
-        <x-button-link href="/cases/create" class="ml-4 self-end bg-green-500 hover:bg-green-700 active:bg-green-900">
+        <x-button-link href="{{asset('cases/create')}}" class="ml-4 self-end bg-green-500 hover:bg-green-700 active:bg-green-900">
                 {{ __('Add new case') }}
         </x-button-link>
     </div>
@@ -42,7 +42,7 @@
                     </td>
                     <td class="py-3 px-6 text-center">
                         <div class="flex item-center justify-center">
-                        <x-button-link href="/cases/{{$case->id}}" class="my-3 self-end bg-yellow-500 hover:bg-yellow-700 active:bg-yellow-900">See more</x-button-link>
+                        <x-button-link href="{{asset('cases/'.$case->id)}}" class="my-3 self-end bg-yellow-500 hover:bg-yellow-700 active:bg-yellow-900">See more</x-button-link>
                         </div>
                     </td>
                     </tr>

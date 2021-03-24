@@ -4,7 +4,7 @@
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
             {{ __('Edit case') }}
         </h2>
-        <x-button-link href="{{asset('cases/'.$case->id)}}" class="ml-4 self-end bg-gray-500 hover:bg-gray-700 active:bg-gray-900">
+        <x-button-link href="cases/{{$case->id}}" class="ml-4 self-end bg-gray-500 hover:bg-gray-700 active:bg-gray-900">
             {{ __('Back') }}
         </x-button-link>
         </div>
