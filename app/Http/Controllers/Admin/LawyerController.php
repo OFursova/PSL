@@ -27,6 +27,7 @@ class LawyerController extends Controller
     public function store(StoreLawyerRequest $request)
     {
         $validData = $request->validated();
+        if(isset($validData['avatar'])) $validData['avatar'] = $this->saveAvatar($request);
         $lawyer = Lawyer::create($validData);
 
         $spec_id = Spec::where('name', $request->get('spec'))->pluck('id');
@@ -51,21 +52,8 @@ class LawyerController extends Controller
     public function update(StoreLawyerRequest $request, Lawyer $lawyer)
     {
         $validData = $request->validated();
+        if(isset($validData['avatar'])) $validData['avatar'] = $this->saveAvatar($request);
         
-        $allowed = ['png', 'jpg', 'jpeg', 'webp', 'jfif'];
-        $extension = $request->file('avatar')->extension();
-       
-        if (in_array($extension, $allowed)) {
-            $name = $request->file('avatar')->getClientOriginalName();
-            //$path = $request->file('avatar')->storeAs('images', $name, 'img');
-            Storage::disk('public')->putFileAs(
-                'avatars/',
-                $request->file('avatar'),
-                $name
-              );
-        }
-
-        $validData['avatar'] = 'storage/avatars/'.$name;
         $lawyer = Lawyer::findOrFail($lawyer->id);
         $lawyer->update($validData);
 
@@ -75,9 +63,9 @@ class LawyerController extends Controller
         return redirect('/admin/lawyers');
     }
 
-    public function destroy(Lawyer $lawyer, $id)
+    public function destroy(Lawyer $lawyer)
     {
-        $lawyer->destroy($id);
+        $lawyer->destroy($lawyer->id);
         return redirect('/admin/lawyers');
     }
 
@@ -91,5 +79,23 @@ class LawyerController extends Controller
     {
         $lawyer = Lawyer::findOrFail($id);
         return view('lawyers.show', compact('lawyer'));
+    }
+
+    public function saveAvatar(StoreLawyerRequest $request)
+    {
+        $allowed = ['png', 'jpg', 'jpeg', 'webp', 'jfif'];
+        $extension = $request->file('avatar')->extension();
+       
+        if (in_array($extension, $allowed)) {
+            $name = $request->file('avatar')->getClientOriginalName();
+            //$path = $request->file('avatar')->storeAs('images', $name, 'img');
+            Storage::disk('public')->putFileAs(
+                'avatars/',
+                $request->file('avatar'),
+                $name
+              );
+        }
+
+        return 'storage/avatars/'.$name;
     }
 }

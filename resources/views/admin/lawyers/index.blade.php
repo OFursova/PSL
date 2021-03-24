@@ -6,7 +6,7 @@
         </h2>
         {{-- only for lawyers and admin --}}
         
-        <x-button-link href="admin/lawyers/create" class="ml-4 self-end bg-green-500 hover:bg-green-700 active:bg-green-900">
+        <x-button-link href="{{asset('admin/lawyers/create')}}" class="ml-4 self-end bg-green-500 hover:bg-green-700 active:bg-green-900">
                 {{ __('Add new lawyer') }}
         </x-button-link>
     </div>
@@ -18,8 +18,7 @@
             <table class="table-auto w-full bg-white shadow-md rounded">
                 <thead>
                   <tr class="bg-gray-200 text-gray-600 uppercase text-md md:text-sm sm:text-xs leading-normal">
-                    <th class="py-3 px-6 text-left">Avatar</th>
-                    <th class="py-3 px-6 text-center">Lawyer</th>
+                    <th class="py-3 px-6 text-center" colspan="2">Lawyer</th>
                     <th class="py-3 px-6 text-center">Specialization</th>
                     <th class="py-3 px-6 text-center">Email</th>
                     <th class="py-3 px-6 text-center">Phone</th>
@@ -29,7 +28,7 @@
                 <tbody class="text-gray-600 text-sm font-light">
                     @foreach ($lawyers as $lawyer)
                     <tr class="border-b border-gray-200 hover:bg-gray-100">
-                    <td class="py-3 px-6 text-center"><img class="w-20" src="{{asset($lawyer->avatar)}}" alt="{{$lawyer->name}}"></td> 
+                    <td class="py-3 px-6 text-center"><img class="w-20 rounded" src="{{asset($lawyer->avatar)}}" alt="{{$lawyer->name}}"></td> 
                     <td class="py-3 px-6 text-left whitespace-normal">{{$lawyer->name}}</td>
                     <td class="py-3 px-6 text-center max-w-xs">{{$lawyer->specs ? $lawyer->specs->pluck('name')->join(',') : ''}}</td>
                     <td class="py-3 px-6 text-center">{{$lawyer->email}}</td>

@@ -2,68 +2,54 @@
     <x-slot name="header">
         <div class="flex items-center justify-between">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Case info') }}
+            {{ __('Lawyer\'s Profile') }}
         </h2>
-        <x-button-link href="/cases" class="ml-4 self-end bg-gray-500 hover:bg-gray-700 active:bg-gray-900">
+        <x-button-link href="{{asset('/admin/lawyers')}}" class="ml-4 self-end bg-gray-500 hover:bg-gray-700 active:bg-gray-900">
             {{ __('Back') }}
         </x-button-link>
         </div>
     </x-slot>
 
-    <div class="py-2 max-w-7xl w-full mx-auto sm:px-6 lg:px-8 my-6">
-        <table class="table-auto min-w-max w-full bg-white shadow-md rounded">
+    <div class="py-2 max-w-7xl w-full mx-auto sm:px-6 lg:px-8 my-6 flex items-start justify-between">
+        <div class="w-1/3">
+                <div class="flex flex-col items-center justify-center">
+                    <img src="{{asset($lawyer->avatar)}}" alt="{{$lawyer->name}}" class="w-3/4 border">
+                    <x-button-link href="/admin/lawyers/{{$lawyer->id}}/edit" class="my-3 text-center bg-yellow-500 hover:bg-yellow-700 active:bg-yellow-900">Edit {{$lawyer->name}}'s profile</x-button-link>
+                    {!! Form::open(['url' => '/admin/lawyers/'.$lawyer->id, 'method' => 'delete']) !!}
+                    <x-button class="my-3 text-center bg-red-500 hover:bg-red-700 active:bg-red-900">Delete from database</x-button>
+                    {!! Form::close() !!} 
+                </div>
+        </div>
+        <table class="table-auto min-w-max w-2/3 bg-white shadow-md rounded">
             <tbody class="text-gray-600 text-sm font-light">
-                        <tr class="border-b border-gray-300 hover:bg-gray-100">
-                            <td class="py-3 px-6 text-left bg-gray-200 text-gray-600 uppercase text-sm leading-normal">Case title</td>
-                            <td class="py-3 px-6 text-center whitespace-nowrap">{{$case->name}}</td>
-                        </tr>
-                        <tr class="border-b border-gray-300 hover:bg-gray-100">
-                            <td class="py-3 px-6 text-left bg-gray-200 text-gray-600 uppercase text-sm leading-normal">Specialization</td>
-                            <td class="py-3 px-6 text-center max-w-xs">{{$case->specs ? $case->specs->pluck('name')->join(',') : ''}}</td>
-                        </tr>
-                        <tr class="border-b border-gray-300 hover:bg-gray-100">
-                            <td class="py-3 px-6 text-left bg-gray-200 text-gray-600 uppercase text-sm leading-normal">Description</td>
-                            <td class="py-3 px-6 text-center max-w-xs">{{$case->description}}</td>
-                        </tr>
-                        <tr class="border-b border-gray-300 hover:bg-gray-100">
-                            <td class="py-3 px-6 text-left bg-gray-200 text-gray-600 uppercase text-sm leading-normal">Started</td>
-                            <td class="py-3 px-6 text-center">{{$case->start ? $case->start : 'not started yet'}}</td>
-                        </tr>
-                        <tr class="border-b border-gray-300 hover:bg-gray-100">
-                            <td class="py-3 px-6 text-left bg-gray-200 text-gray-600 uppercase text-sm leading-normal">Ended</td>
-                            <td class="py-3 px-6 text-center">{{$case->end ? $case->end : 'in progress'}}</td>
-                        </tr>
-                        <tr class="border-b border-gray-300 hover:bg-gray-100">
-                            <td class="py-3 px-6 text-left bg-gray-200 text-gray-600 uppercase text-sm leading-normal">Result</td>
-                            <td class="py-3 px-6 text-center">
-                                @if ($case->result === 1) <span class="bg-green-200 text-green-600 py-1 px-3 rounded-full text-xs">Won</span>
-                                @elseif ($case->result === 0) <span class="bg-red-200 text-red-600 py-1 px-3 rounded-full text-xs">Lost</span>
-                                @else -
-                                @endif
-                            </td>
-                        </tr>
-                        <tr class="border-b border-gray-300 hover:bg-gray-100">
-                            <td class="py-3 px-6 text-left bg-gray-200 text-gray-600 uppercase text-sm leading-normal">Leading lawyer</td>
-                            <td class="py-3 px-6 text-center">Unset</td>
-                        </tr>
-                        <tr class="border-b border-gray-300 hover:bg-gray-100">
-                            <td class="py-3 px-6 text-left bg-gray-200 text-gray-600 uppercase text-sm leading-normal">Client info</td>
-                            <td class="py-3 px-6 text-center">Unset</td>
-                        </tr>
-                        <tr class="border-b border-gray-300 hover:bg-gray-100">
-                            <td class="py-3 px-6 text-center bg-gray-200 text-gray-600 uppercase text-sm leading-normal">
-                                {!! Form::open(['url' => '/cases/'.$case->id, 'method' => 'delete']) !!}
-                                <x-button class="my-3 bg-red-500 hover:bg-red-700 active:bg-red-900">Delete case from database</x-button>
-                                {!! Form::close() !!}    
-                            </td>
-                            <td class="py-3 px-6 text-center">
-                                <div class="flex item-center justify-center">
-                                    <div class="flex item-center justify-center">
-                                        <x-button-link href="/cases/{{$case->id}}/edit" class="my-3 bg-yellow-500 hover:bg-yellow-700 active:bg-yellow-900">Edit case info</x-button-link>
-                                    </div>
-                                </div>
-                            </td>
-                        </tr>
+                <tr class="border-b border-gray-300 hover:bg-gray-100">
+                    <td class="py-3 px-6 text-left bg-gray-200 text-gray-600 uppercase text-sm leading-normal">Full name:</td>
+                    <td class="py-3 px-6 text-center whitespace-nowrap">{{$lawyer->name}}</td>
+                </tr>
+                <tr class="border-b border-gray-300 hover:bg-gray-100">
+                    <td class="py-3 px-6 text-left bg-gray-200 text-gray-600 uppercase text-sm leading-normal">Specialization:</td>
+                    <td class="py-3 px-6 text-center max-w-xs">{{$lawyer->specs ? $lawyer->specs->pluck('name')->join(',') : ''}}</td>
+                </tr>
+                <tr class="border-b border-gray-300 hover:bg-gray-100">
+                    <td class="py-3 px-6 text-left bg-gray-200 text-gray-600 uppercase text-sm leading-normal">Email:</td>
+                    <td class="py-3 px-6 text-center max-w-xs">{{$lawyer->email}}</td>
+                </tr>
+                <tr class="border-b border-gray-300 hover:bg-gray-100">
+                    <td class="py-3 px-6 text-left bg-gray-200 text-gray-600 uppercase text-sm leading-normal">Contact phone:</td>
+                    <td class="py-3 px-6 text-center max-w-xs">{{$lawyer->phone}}</td>
+                </tr>
+                <tr class="border-b border-gray-300 hover:bg-gray-100">
+                    <td class="py-3 px-6 text-left bg-gray-200 text-gray-600 uppercase text-sm leading-normal">Post address:</td>
+                    <td class="py-3 px-6 text-center max-w-xs">{{$lawyer->address}}</td>
+                </tr>
+                <tr class="border-b border-gray-300 hover:bg-gray-100">
+                    <td class="py-3 px-6 text-left bg-gray-200 text-gray-600 uppercase text-sm leading-normal">Cases in progress:</td>
+                    <td class="py-3 px-6 text-center">Unset</td>
+                </tr>
+                <tr class="border-b border-gray-300 hover:bg-gray-100">
+                    <td class="py-3 px-6 text-left bg-gray-200 text-gray-600 uppercase text-sm leading-normal">Clients:</td>
+                    <td class="py-3 px-6 text-center">Unset</td>
+                </tr>
             </tbody>
         </table>
     </div>

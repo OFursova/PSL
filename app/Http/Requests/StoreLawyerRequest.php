@@ -25,7 +25,7 @@ class StoreLawyerRequest extends FormRequest
     {
         return [
             'name' => 'required|string',
-            //'email' => 'required|string|unique:users,email,'.$this->id,
+            //'email' => 'required|string|unique:users,email,'.$this->user->id,
             'email' => 'nullable',
             'password' => 'nullable',
             'avatar' => 'nullable',

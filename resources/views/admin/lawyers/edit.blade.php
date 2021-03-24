@@ -2,9 +2,9 @@
     <x-slot name="header">
         <div class="flex items-center justify-between">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Edit case') }}
+            {{ __('Edit lawyer\'s profile') }}
         </h2>
-        <x-button-link href="cases/{{$case->id}}" class="ml-4 self-end bg-gray-500 hover:bg-gray-700 active:bg-gray-900">
+        <x-button-link href="{{asset('admin/lawyers')}}" class="ml-4 self-end bg-gray-500 hover:bg-gray-700 active:bg-gray-900">
             {{ __('Back') }}
         </x-button-link>
         </div>
@@ -14,70 +14,66 @@
     <x-auth-validation-errors class="mb-4" :errors="$errors" />
     
     <!-- Form -->
-    {{-- {!! Form::model($case, ['url' => '/cases/'.$case->id, 'method' => 'put']) !!} --}}
-   
-    <form method="POST" action="/cases/{{$case->id}}">
+    <form method="POST" action="/admin/lawyers/{{$lawyer->id}}" enctype="multipart/form-data" class="flex items-center justify-between">
         @csrf
         <input name="_method" type="hidden" value="PUT">
-        <!-- Case name -->
-        <div>
-            <x-label for="name" :value="__('Case name')" />
-            
-            <x-input id="name" class="block mt-1 w-full" type="text" name="name" :value="$case->name" required autofocus />
+        <div class="w-1/3 flex flex-col items-center justify-start p-3 self-start">
+        <!-- Avatar -->
+            <x-label for="avatar" :value="__('Avatar:')" class="self-start" />
+            <img src="{{asset($lawyer->avatar)}}" alt="{{$lawyer->name}}" class="w-3/4 border">
+            <x-input id="avatar" class="block mt-4 w-full" type="file" name="avatar" :value="$lawyer->avatar" autofocus />
         </div>
-            
-        <!-- Case slug -->
+        <div class="w-2/3 p-3">
+            <input type="hidden" name="role_id" value="2">
+        <!-- Lawyer's full name -->
         <div>
-            <x-label for="slug" :value="__('Case slug')" />
-                
-            <x-input id="slug" class="block mt-1 w-full" type="text" name="slug" :value="$case->slug" required autofocus />
-        </div>
-                
-        <!-- Case description -->
-        <div>
-            <x-label for="description" :value="__('Case description')" />
-
-            <x-textarea id="description" class="block mt-1 w-full" type="text" name="description" required autofocus>
-                    {{$case->description}}
-            </x-textarea>
+            <x-label for="name" :value="__('Full name:')" />
+            <x-input id="name" class="block mt-1 w-full" type="text" name="name" :value="$lawyer->name" required autofocus />
         </div>
 
-        <!-- Start and end dates -->
-        <div class="flex items-center justify-between my-4">
-                <x-label for="start" class="whitespace-nowrap mx-2" :value="__('Start date')" />
-
-                <x-input id="start" class="block w-1/3" type="date" name="start" :value="$case->start" autofocus />
-
-                <x-label for="end" class="whitespace-nowrap mx-2" :value="__('Case solved')" />
-                
-                <x-input id="end" class="block w-1/3" type="date" name="end" :value="$case->end" autofocus />
+        <!-- Password -->
+        <div>
+            <x-label for="password" :value="__('Password:')" />
+            <x-input id="password" class="block mt-1 w-full" type="password" name="password" :value="$lawyer->password" autofocus />
         </div>
         
-        <!-- Result -->
-        <div class="flex items-center justify-start my-4">
-            <x-label for="won" class="mx-2" value="Won" />
-            <x-input id="won" class="w-5" type="radio" name="result" value="1"/>
-            <x-label for="lost" class="mx-2" value="Lost" />
-            <x-input id="lost" class="w-5" type="radio" name="result" value="0"/>
+        <!-- Email -->
+        <div>
+            <x-label for="email" :value="__('Email:')" />
+            <x-input id="email" class="block mt-1 w-full" type="email" name="email" :value="$lawyer->email" required autofocus />
         </div>
-        
-        {{-- Select for lawyers/users --}}
+
+        <!-- Phone -->
+        <div>
+            <x-label for="phone" :value="__('Contact phone:')" />
+            <x-input id="phone" class="block mt-1 w-full" type="text" name="phone" :value="$lawyer->phone" autofocus />
+        </div>
+
+        <!-- Address -->
+        <div>
+            <x-label for="address" :value="__('Post address:')" />
+            <x-input id="address" class="block mt-1 w-full" type="text" name="address" :value="$lawyer->address" autofocus />
+        </div>
 
         <!-- Select for specialization -->
         <div>
             <x-label for="spec" :value="__('Specialization:')" />
-
-            <x-select id="spec" name="spec" autocomplete="specialization" :collection="$specs" :selected="$case->specs->pluck('name')->join(',')"/>
+            <x-select id="spec" name="spec" autocomplete="specialization" :collection="$specs" :selected="$lawyer->specs->pluck('name')->join(',')" />
         </div>
 
-        <!-- Attach documents -->
+        {{-- Select for cases --}}
+        <div>
+            <x-label for="cases" :value="__('Assign cases:')" />
+            {{-- <x-select id="cases" name="cases" autocomplete="cases" :collection="$cases" :selected="null" /> --}}
+            <x-input type="text"></x-input>
+        </div>
 
         <div class="flex items-center justify-center mt-6">
-            <x-button class="ml-4 ">
-                {{ __('Save changes') }}
-            </x-button>
+        <x-button class="ml-4 bg-emerald-700 hover:bg-emerald-500 active:bg-emerald-900">
+            {{ __('Save changes') }}
+        </x-button>
+        </div>
         </div>
     </form>
-    {{-- {!! Form::close() !!} --}}
     </x-form>
 </x-app-layout>
