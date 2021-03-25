@@ -1,10 +1,14 @@
 <x-guest-layout>
     <x-auth-card>
         <x-slot name="logo">
+            <div class="flex flex-col items-center justify-center">
             <a href="/">
                 <x-application-logo class="w-20 h-20 fill-current text-gray-500" />
             </a>
+            <p class="text-center pt-3 text-indigo-800">Please log in or <a href="{{ route('register') }}" class="text-gray-800">register</a> to get access to site content</p>
+        </div>
         </x-slot>
+
 
         <!-- Session Status -->
         <x-auth-session-status class="mb-4" :status="session('status')" />

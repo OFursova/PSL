@@ -22,11 +22,22 @@ require __DIR__.'/auth.php';
 
 /* ===== RESOURCES FOR GUESTS ===== */
 
-//Route::resource('/cases', CaseController::class); // later ->only(['index', 'show']);
+Route::get('/', function () {
+    return view('welcome');
+});
+
+// Route::get('/about', [MainController::class, 'about'])->name('about');
+// Route::get('/cases', [CaseController::class, 'index'])->name('cases');
+// Route::get('/cases/{id}', [CaseController::class, 'show']);
+// Route::get('/lawyers', [LawyerController::class, 'getAll'])->name('lawyers');
+// Route::get('/lawyers/{id}', [LawyerController::class, 'getOne']);
+// Route::get('/contact', [MainController::class, 'contact'])->name('contact');
+// Route::post('/contact', [MainController::class, 'getContacts']);
 
 /* ===== RESOURCES FOR REGISTERED USERS ===== */
 
 Route::middleware(['auth'])->group(function(){
+    Route::get('/home', [MainController::class, 'index'])->name('home');
     Route::get('/about', [MainController::class, 'about'])->name('about');
     Route::resource('/cases', CaseController::class);
     Route::get('/cases', [CaseController::class, 'index'])->name('cases');
@@ -55,9 +66,9 @@ Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth'])->name('dashboard');
 
-Route::get('/home', function () {
-    return view('home');
-})->middleware(['auth'])->name('home');
+// Route::get('/home', function () {
+//     return view('home');
+// })->middleware(['auth'])->name('home');
 
 // Route::get('/test', [MainController::class, 'test']);
 
