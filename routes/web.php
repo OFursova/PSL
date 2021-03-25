@@ -3,6 +3,7 @@
 use App\Http\Controllers\Admin\LawyerController;
 use App\Http\Controllers\CaseController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\MainController;
 use App\Models\LegalCase;
 use Illuminate\Support\Facades\Route;
 
@@ -26,11 +27,14 @@ require __DIR__.'/auth.php';
 /* ===== RESOURCES FOR REGISTERED USERS ===== */
 
 Route::middleware(['auth'])->group(function(){
+    Route::get('/about', [MainController::class, 'about'])->name('about');
     Route::resource('/cases', CaseController::class);
     Route::get('/cases', [CaseController::class, 'index'])->name('cases');
+    Route::get('/lawyers', [LawyerController::class, 'getAll'])->name('lawyers');
+    Route::get('/lawyers/{id}', [LawyerController::class, 'getOne']);
+    Route::get('/contact', [MainController::class, 'contact'])->name('contact');
+    Route::post('/contact', [MainController::class, 'getContacts']);
 });
-
-
 
 /* ===== ADMIN PANEL ===== */
 

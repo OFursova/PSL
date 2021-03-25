@@ -75,7 +75,7 @@ class LawyerController extends Controller
         return view('lawyers.index', compact('lawyers'));
     }
 
-    public function getOne(Lawyer $lawyer, $id)
+    public function getOne($id)
     {
         $lawyer = Lawyer::findOrFail($id);
         return view('lawyers.show', compact('lawyer'));

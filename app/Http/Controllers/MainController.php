@@ -44,7 +44,7 @@ class MainController extends Controller
      */
     public function about()
     {
-        # code...
+        return view('about');
     }
 
     /**
@@ -54,7 +54,19 @@ class MainController extends Controller
      */
     public function contact()
     {
-        # code...
+        return view('contact');
+    }
+
+    public function getContacts(Request $request)
+    {
+        $validated = $request->validate([
+            'name' => 'required|min:3|max:255',
+            'email' => 'required|email',
+            'message' => 'required|min:3',
+        ]);
+
+        //sending a letter
+        return back()->with('success', 'Thanks!');
     }
 
     /**

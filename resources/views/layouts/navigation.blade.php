@@ -5,14 +5,15 @@
             <div class="flex">
                 <!-- Logo -->
                 <div class="flex-shrink-0 flex items-center">
-                    {{-- role admin or layer --}}
+                    @if (Auth::user()->roles->slug == 'admin')
                     <a href="{{ route('dashboard') }}"> 
                         <x-application-logo class="block h-10 w-auto fill-current text-gray-600" />
                     </a>
-                    {{-- role client --}}
-                    {{-- <a href="{{ 'home' }}"> 
+                    @else
+                    <a href="{{ route('home') }}"> 
                         <x-application-logo class="block h-10 w-auto fill-current text-gray-600" />
-                    </a> --}}
+                    </a>
+                    @endif
                     <h2 class="font-semibold ml-2 text-xl text-gray-800 leading-tight">
                         {{ __('Pearson Specter Litt') }}
                     </h2>
@@ -20,21 +21,25 @@
 
                 <!-- Navigation Links -->
                 <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
-                    {{-- role admin or layer --}}
+                    @if (Auth::user()->roles->slug == 'admin')
                     <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                         {{ __('Dashboard') }}
                     </x-nav-link>
-                    {{-- everyone --}}
-                    <x-nav-link href="/home" :active="request()->routeIs('home')">
+                    @endif
+                    <x-nav-link href="/about" :active="request()->routeIs('about')">
                         {{ __('About Us') }}
                     </x-nav-link>
                     <x-nav-link href="/cases" :active="request()->routeIs('cases')">
                         {{ __('Cases') }}
                     </x-nav-link>
+                    @if (Auth::user()->roles->slug == 'client')
                     <x-nav-link href="/lawyers" :active="request()->routeIs('lawyers')">
                         {{ __('Lawyers')}}
                     </x-nav-link>
-                    @if (Auth::user()->roles->slug == 'admin')
+                    <x-nav-link href="/contact" :active="request()->routeIs('contact')" class="mr-6">
+                        {{ __('Contact Us') }}
+                    </x-nav-link>
+                    @else
                     <x-nav-link href="/admin/lawyers" :active="request()->routeIs('admin-lawyers')">
                         {{ __('Lawyers') }}
                     </x-nav-link>
@@ -44,11 +49,7 @@
 
             <!-- Settings Dropdown -->
             <div class="hidden sm:flex sm:items-center sm:ml-6">
-                <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
-                {{-- role client --}}
-                <x-nav-link href="/contact" :active="request()->routeIs('contact')" class="mr-6">
-                    {{ __('Contact Us') }}
-                </x-nav-link>
+                <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">                
                 </div>
 
                 <x-dropdown align="right" width="48">
@@ -94,9 +95,29 @@
     <!-- Responsive Navigation Menu -->
     <div :class="{'block': open, 'hidden': ! open}" class="hidden sm:hidden">
         <div class="pt-2 pb-3 space-y-1">
+            @if (Auth::user()->roles->slug == 'admin')
             <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                 {{ __('Dashboard') }}
             </x-responsive-nav-link>
+            @endif
+            <x-responsive-nav-link href="/about" :active="request()->routeIs('about')">
+                {{ __('About Us') }}
+            </x-responsive-nav-link>
+            <x-responsive-nav-link href="/cases" :active="request()->routeIs('cases')">
+                {{ __('Cases') }}
+            </x-responsive-nav-link>
+            @if (Auth::user()->roles->slug == 'client')
+            <x-responsive-nav-link href="/lawyers" :active="request()->routeIs('lawyers')">
+                {{ __('Lawyers')}}
+            </x-responsive-nav-link>
+            <x-responsive-nav-link href="/contact" :active="request()->routeIs('contact')" class="mr-6">
+                {{ __('Contact Us') }}
+            </x-responsive-nav-link>
+            @else
+            <x-responsive-nav-link href="/admin/lawyers" :active="request()->routeIs('admin-lawyers')">
+                {{ __('Lawyers') }}
+            </x-responsive-nav-link>
+            @endif
         </div>
 
         <!-- Responsive Settings Options -->

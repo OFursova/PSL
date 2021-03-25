@@ -2,7 +2,7 @@
     <x-slot name="header">
         <div class="flex items-center justify-between">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight flex-1">
-            {{ __('Cases') }}
+            {{ __('Cases in progress') }}
         </h2>
         {{-- only for lawyers and admin --}}
         

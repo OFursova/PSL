@@ -47,8 +47,19 @@
                 </div>
                 <h1 class="text-center">Pearson Specter Litt</h1>
                 <p>Fighting for justice since 1988</p>
-
-                
+                <div>
+                    <h3>We provide a full range of legal serveces:</h3>
+                    <ul>
+                        <li>Corporate Law</li>
+                        <li>Employment & Discrimination Law</li>
+                        <li>Education & Special Education Law</li>
+                        <li>College & Student’s Rights Law</li>
+                        <li>Mental Health Law</li>
+                        <li>Immigration Law</li>
+                        <li>Civil Rights, Free Speech & Due Process</li>
+                    </ul>
+                </div>
+{{-- TO DO axios recent cases --}}
             </div>
         </div>
     </body>
