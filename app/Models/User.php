@@ -49,11 +49,6 @@ class User extends Authenticatable
 
     protected $table = 'users';
 
-    // public function cases()
-    // {
-    //     return $this->belongsToMany(LegalCase::class, 'users_cases');
-    // } using trait inspite
-
     public function getAvatarAttribute($value)
     {
        return $value ? $value : '/images/no_image.jpg';

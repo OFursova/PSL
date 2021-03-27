@@ -3,14 +3,13 @@
 namespace App\Models;
 
 use App\Scopes\ClientScope;
-use App\Traits\Attachable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 
 class Client extends User
 {
-    use Attachable, HasFactory;
+    use HasFactory;
 
     /**
      * The "booted" method of the model.
@@ -20,6 +19,11 @@ class Client extends User
     protected static function booted()
     {
         static::addGlobalScope(new ClientScope);
+    }
+
+    public function cases()
+    {
+        return $this->morphToMany(LegalCase::class, 'caseable');
     }
 
 }

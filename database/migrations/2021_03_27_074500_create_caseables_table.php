@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateCasesUsersTable extends Migration
+class CreateCaseablesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,10 @@ class CreateCasesUsersTable extends Migration
      */
     public function up()
     {
-        Schema::create('cases_users', function (Blueprint $table) {
-            $table->id();
-            $table->timestamps();
+        Schema::create('caseables', function (Blueprint $table) {
+            $table->unsignedBigInteger('legal_case_id');
+            $table->foreign('legal_case_id')->references('id')->on('legal_cases')->onDelete('cascade');
+            $table->morphs('caseable');
         });
     }
 
@@ -26,6 +27,6 @@ class CreateCasesUsersTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('cases_users');
+        Schema::dropIfExists('caseables');
     }
 }
