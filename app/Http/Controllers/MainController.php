@@ -28,7 +28,7 @@ class MainController extends Controller
     public function index()
     {
         //dd(Lawyer::findOrFail(2)->cases);
-        dd(LegalCase::find(26)->lawyers);
+        //dd(LegalCase::find(26)->lawyers);
         //dd(Role::find(1)->permissions);
         return view('home');
     }
