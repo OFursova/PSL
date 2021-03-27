@@ -1,9 +1,20 @@
-<x-app-layout>
-    <x-slot name="header">
+<x-guest-layout>
+    <header class="bg-white shadow">
+        <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8 flex items-center justify-between">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
             {{ __('About Us') }}
         </h2>
-    </x-slot>
+        @auth
+        <x-button-link href="{{asset('/home')}}" class="ml-4 self-end bg-gray-500 hover:bg-gray-700 active:bg-gray-900">
+            {{ __('Back to Homepage') }}
+        </x-button-link>   
+        @else      
+        <x-button-link href="{{asset('/')}}" class="ml-4 self-end bg-gray-500 hover:bg-gray-700 active:bg-gray-900">
+            {{ __('Back to Welcomepage') }}
+        </x-button-link>
+        @endauth
+        </div>
+    </header>
 
     <div class="bg-gray-50">
         <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8 lg:flex lg:items-center lg:justify-between">
@@ -12,7 +23,7 @@
             </div>
             <div class="lg:w-2/3 p-3 w-full">
                 <p class="text-justify">
-                    Founded in 1988, and located in New York City, <span class="text-indigo-600">Pearson Specter Litt LLC</span> provides a full range of legal assistance and services, thus offering a complete legal help package for both individuals and businesses. With a range of professional staff able to provide assistance in English, Chinese, Farsi and Russian (together with other languages), we are able to provide timely and accurate guidance to all clients, irrespective of nationality.
+                    Founded in 1988, and located in New York City, <span class="text-indigo-600 text-3xl">Pearson Specter Litt LLC</span> provides a full range of legal assistance and services, thus offering a complete legal help package for both individuals and businesses. With a range of professional staff able to provide assistance in English, Chinese, Farsi and Russian (together with other languages), we are able to provide timely and accurate guidance to all clients, irrespective of nationality.
                 </p>
             </div>
         </div>
@@ -52,15 +63,15 @@
               </a>
             </div>
             <div class="ml-3 inline-flex rounded-md shadow">
-              <a href="/cases" class="inline-flex items-center justify-center px-5 py-3 border border-transparent text-base font-medium rounded-md text-indigo-600 bg-white hover:bg-indigo-50">
-                Learn more
+              <a href="/lawyers" class="inline-flex items-center justify-center px-5 py-3 border border-transparent text-base font-medium rounded-md text-indigo-600 bg-white hover:bg-indigo-50">
+                Our team
               </a>
             </div>
           </div>
         </div>
         <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8 lg:flex lg:items-center lg:justify-between">
             <div class="lg:w-1/3 p-3 w-full">
-                <img src="{{asset('images/psl-headq.jpg')}}" alt="Pearson Specter Litt Headquarters" class="w-full rounded">
+                <img src="{{asset('images/psl-headq.jpg')}}" alt="Pearson Specter Litt Headquarters" class="w-2/3 rounded mx-auto">
             </div>
             <div class="lg:w-2/3 p-3 w-full">
                 <h2 class="text-2xl text-indigo-600">Proficience certification</h2>
@@ -76,4 +87,4 @@
             </div>
         </div>
     </div>
-</x-app-layout>
+</x-guest-layout>

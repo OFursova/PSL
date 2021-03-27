@@ -5,25 +5,60 @@
         </h2>
     </x-slot>
 
-    <div class="pt-10">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="p-6 bg-white border-b border-gray-200">
-                    Your cases will be shown here
-                </div>
-            </div>
-        </div>
-    </div>
+    <x-info-card x-data="cases()" x-init="fetchCases()">
+        <x-slot name="title">My cases:</x-slot>
+            <ol class="px-4">
+                <template x-for="item in cases" :key="item.id">
+                    <template x-if="!item.result">
+                        <li class="list-decimal"><span x-text="item.name"></span> <span class="text-gray-600" x-text="item.description"></span></li>
+                    </template>
+                </template>
+            </ol>
+                <template x-if="nothingToShow">
+                    <p>Your cases will be shown here</p>
+                </template>
+    </x-info-card>
 
-    <div class="py-10">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="p-6 bg-white border-b border-gray-200">
-                    Your lawyer will be shown here
-                </div>
-            </div>
-        </div>
-    </div>
+    <x-info-card x-data="cases()" x-init="fetchCases()">
+        <x-slot name="title">My {{Auth::user()->role_id == 3 ? 'lawyers' : 'clients'}}:</x-slot>
+        <ol class="px-4">
+            <template x-for="item in cases" :key="item.id">
+                <template x-if="!item.result">
+                    <li class="list-decimal"><span x-text="item.name"></span> <span x-text="item.description"></span></li>
+                </template>
+            </template>
+        </ol>
+            <template x-if="nothingToShow">
+                <p>Your lawyer will be shown here</p>
+            </template>
+    </x-info-card>
 
-
+<script>
+    let id = {{Auth::user()->id}};
+    let userRole = {{Auth::user()->role_id}};
+    let role;
+    if (userRole === 2) role = 'lawyers'
+    else if (userRole === 3) role = 'clients'
+    else role = '';
+    
+        function cases() {
+            return {
+                cases: [],
+                nothingToShow: true,
+                fetchCases: function () {
+                    this.error = this.cases = null;
+                    axios
+                        .get('/api/'+role+'/'+id)
+                        .then((response) => {
+                            console.log(response.data.data.cases);
+                            this.nothingToShow = false;
+                            this.cases = response.data.data.cases;
+                        })
+                        .catch((error) => {
+                            this.error = error.response.data.message || error.message;
+                        });
+                },
+            };
+        }
+</script>
 </x-app-layout>

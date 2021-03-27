@@ -26,7 +26,7 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-// Route::get('/about', [MainController::class, 'about'])->name('about');
+Route::get('/about', [MainController::class, 'about'])->name('about');
 // Route::get('/cases', [CaseController::class, 'index'])->name('cases');
 // Route::get('/cases/{id}', [CaseController::class, 'show']);
 // Route::get('/lawyers', [LawyerController::class, 'getAll'])->name('lawyers');
@@ -38,7 +38,7 @@ Route::get('/', function () {
 
 Route::middleware(['auth'])->group(function(){
     Route::get('/home', [MainController::class, 'index'])->name('home');
-    Route::get('/about', [MainController::class, 'about'])->name('about');
+    //Route::get('/about', [MainController::class, 'about'])->name('about');
     Route::resource('/cases', CaseController::class);
     Route::get('/cases', [CaseController::class, 'index'])->name('cases');
     Route::get('/lawyers', [LawyerController::class, 'getAll'])->name('lawyers');

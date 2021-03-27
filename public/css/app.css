@@ -31432,6 +31432,10 @@ select {
           animation: bounce 1s infinite;
 }
 
+/* .sample-class {
+    @apply mx-auto bg-grey-200 text-blue-700;
+} */
+
 @media (min-width: 640px) {
   .sm\:container {
     width: 100%;

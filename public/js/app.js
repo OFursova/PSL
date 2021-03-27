@@ -3800,6 +3800,8 @@ module.exports = {
 
 __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
 
+__webpack_require__(/*! ./info-from-api */ "./resources/js/info-from-api.js");
+
 __webpack_require__(/*! alpinejs */ "./node_modules/alpinejs/dist/alpine.js");
 
 /***/ }),
@@ -3845,6 +3847,33 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 //     cluster: process.env.MIX_PUSHER_APP_CLUSTER,
 //     forceTLS: true
 // });
+
+/***/ }),
+
+/***/ "./resources/js/info-from-api.js":
+/*!***************************************!*\
+  !*** ./resources/js/info-from-api.js ***!
+  \***************************************/
+/***/ ((__unused_webpack_module, __unused_webpack_exports, __webpack_require__) => {
+
+var _require = __webpack_require__(/*! axios */ "./node_modules/axios/index.js"),
+    axios = _require["default"];
+
+function cases() {
+  return {
+    cases: [],
+    fetchCases: function fetchCases() {
+      var _this = this;
+
+      this.error = this.cases = null;
+      axios.get("/api/cases").then(function (response) {
+        console.log(response.data.data); // this.books = response.data.data;
+      })["catch"](function (error) {
+        _this.error = error.response.data.message || error.message;
+      });
+    }
+  };
+}
 
 /***/ }),
 

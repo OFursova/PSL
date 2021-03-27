@@ -22,6 +22,17 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+// can be made posiible via sanctum user tokens
+// Route::middleware('auth:api')->group(function(){
+// Route::apiResource('/lawyers', LawyerController::class);
+// Route::apiResource('/clients', ClientController::class);
+// Route::apiResource('/cases', LegalCaseController::class);
+// Route::apiResource('/specializations', SpecializationController::class);
+// });
+
+
+// TESTING
+
 Route::apiResource('/lawyers', LawyerController::class);
 Route::apiResource('/clients', ClientController::class);
 Route::apiResource('/cases', LegalCaseController::class);

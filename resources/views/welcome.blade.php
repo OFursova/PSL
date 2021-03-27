@@ -23,59 +23,102 @@
                 <div class="hidden fixed top-0 right-0 px-6 py-4 sm:block">
                     @auth
                         @if (Auth::user()->roles->slug == 'admin')
-                        <a href="{{ url('/dashboard') }}" class="text-sm text-gray-700 underline">Dashboard</a>
+                        <x-button-link href="{{asset('/dashboard')}}" class="ml-4 self-end bg-gray-300 hover:bg-gray-500 active:bg-gray-600">
+                            {{ __('Dashboard') }}
+                        </x-button-link> 
+                        {{-- <a href="{{ url('/dashboard') }}" class="text-sm text-gray-700 underline">Dashboard</a> --}}
                         @else
-                        <a href="'{{ url('/home') }}'" class="text-sm text-gray-700 underline">Explore</a>
+                        <x-button-link href="{{asset('/home')}}" class="ml-4 self-end bg-gray-300 hover:bg-gray-500 active:bg-gray-700">
+                            {{ __('Explore') }}
+                        </x-button-link> 
+                        {{-- <a href="'{{ url('/home') }}'" class="text-sm text-gray-700 underline">Explore</a> --}}
                         @endif
                     @else
-                        <a href="{{ route('login') }}" class="text-sm text-gray-700 underline">Log in</a>
+                        <x-button-link href="{{asset('/login')}}" class="ml-4 self-end bg-gray-300 hover:bg-gray-500 active:bg-gray-700">
+                            {{ __('Log in') }}
+                        </x-button-link>
+                        {{-- <a href="{{ route('login') }}" class="text-sm text-gray-700 underline">Log in</a> --}}
 
                         @if (Route::has('register'))
-                            <a href="{{ route('register') }}" class="ml-4 text-sm text-gray-700 underline">Register</a>
+                        <x-button-link href="{{asset('/register')}}" class="ml-4 self-end bg-gray-300 hover:bg-gray-500 active:bg-gray-700">
+                            {{ __('Register') }}
+                        </x-button-link>
+                            {{-- <a href="{{ route('register') }}" class="ml-4 text-sm text-gray-700 underline">Register</a> --}}
                         @endif
                     @endauth
                 </div>
             @endif
         
-        <div class="max-w-6xl mx-auto sm:px-6 lg:px-8 flex items-center justify-center flex-wrap">
-            <div class="flex justify-center p-3 pt-8 sm:justify-start sm:pt-0">
+        <div class="max-w-screen flex items-center justify-center flex-wrap pt-8">
+            <div class="flex justify-center px-3 sm:px-6 lg:px-8 pt-8 sm:justify-start sm:pt-0">
                 <x-application-logo class="h-16 w-auto text-gray-700 sm:h-20"/>
             </div>
-            <div class="p-3 mr-20">
+            <div class="px-3 sm:px-6 lg:px-8">
                 <h1 class="text-6xl text-indigo-500">Pearson Specter Litt</h1>
                 <p>Fighting for justice since 1988</p>
             </div>
-            <div class="p-3 mt-10 ml-20">
-                <h3 class="text-2xl text-indigo-400">We provide a full range of legal services:</h3>
-                <ul class="pl-20">
-                    <li class="list-disc">Corporate Law</li>
-                    <li class="list-disc">Employment & Discrimination Law</li>
-                    <li class="list-disc">Education & Special Education Law</li>
-                    <li class="list-disc">College & Student’s Rights Law</li>
-                    <li class="list-disc">Mental Health Law</li>
-                    <li class="list-disc">Immigration Law</li>
-                    <li class="list-disc">Civil Rights, Free Speech & Due Process</li>
-                </ul>
+            <div class="px-3 sm:px-6 lg:px-8 py-3 mt-10 flex items-center justify-between w-full bg-gray-200">
+                <div>
+                    <h3 class="text-2xl text-indigo-400">We provide a full range of legal services:</h3>
+                    <ul class="pl-20">
+                        <li class="list-disc">Corporate Law</li>
+                        <li class="list-disc">Employment & Discrimination Law</li>
+                        <li class="list-disc">Education & Special Education Law</li>
+                        <li class="list-disc">College & Student’s Rights Law</li>
+                        <li class="list-disc">Mental Health Law</li>
+                        <li class="list-disc">Immigration Law</li>
+                        <li class="list-disc">Civil Rights, Free Speech & Due Process</li>
+                    </ul>
+                </div>
+                <div>
+                    <div class="m-3 inline-flex rounded-md shadow">
+                      <a href="/contact" class="inline-flex items-center justify-center px-5 py-3 border border-transparent text-base font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700">
+                        Get legal aid
+                      </a>
+                    </div>
+                    <div class="m-3 inline-flex rounded-md shadow">
+                      <a href="/about" class="inline-flex items-center justify-center px-5 py-3 border border-transparent text-base font-medium rounded-md text-indigo-600 bg-white hover:bg-indigo-50">
+                        Learn more
+                      </a>
+                    </div>
+                </div>
+            </div>    
+        </div>
+        <hr class="bg-indigo-400">
+        <div class="max-w-6xl mx-auto sm:px-6 lg:px-8" x-data="lawyers()" x-init="fetchLawyers()">
+            <h2 class="text-2xl mx-auto py-4 text-indigo-500 text-center">Our team:</h2>  
+            <div class="flex justify-between items-start flex-wrap">
+                <template x-for="lawyer in lawyers" :key="lawyer.id">
+                    <div class="flex flex-col items-center justify-between w-1/6 p-3 m-3 border shadow rounded bg-white">
+                        <div class="h-40 overflow-hidden"><img :src="lawyer.avatar" :alt="lawyer.name" class="w-full"></div>
+                        <h3 class="py-3 text-lg font-semibold text-indigo-600" x-text="lawyer.name"></h3>
+                        <template x-for="spec in lawyer.specialization">
+                        <p class="text-gray-400 text-sm" x-text="spec.name"></p>
+                        </template>
+                    </div>
+                </template>
             </div>
         </div>
-
-        <div class="w-full mt-8 flex lg:mt-0 lg:flex-shrink-0 p-10 items-center justify-center">
-            <div class="inline-flex rounded-md shadow">
-              <a href="/contact" class="inline-flex items-center justify-center px-5 py-3 border border-transparent text-base font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700">
-                Get legal aid
-              </a>
-            </div>
-            <div class="ml-3 inline-flex rounded-md shadow">
-              <a href="/home" class="inline-flex items-center justify-center px-5 py-3 border border-transparent text-base font-medium rounded-md text-indigo-600 bg-white hover:bg-indigo-50">
-                Learn more
-              </a>
-            </div>
-          </div>
         </div>
                 
-        <div class="max-w-6xl mx-auto sm:px-6 lg:px-8">   
-            {{-- TO DO axios recent cases --}}
-        </div>
-
+        <script>
+            function lawyers() {
+                return {
+                    lawyers: [],
+                    fetchLawyers: function () {
+                        this.error = this.lawyers = null;
+                        axios
+                            .get("/api/lawyers")
+                            .then((response) => {
+                                console.log(response.data.data);
+                                this.lawyers = response.data.data;
+                            })
+                            .catch((error) => {
+                                this.error = error.response.data.message || error.message;
+                            });
+                    },
+                };
+            }
+    </script>
     </body>
 </html>

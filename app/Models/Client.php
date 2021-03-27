@@ -26,4 +26,9 @@ class Client extends User
         return $this->morphToMany(LegalCase::class, 'caseable');
     }
 
+    public function specs()
+    {
+        return $this->morphToMany(Spec::class, 'specable');
+    }
+
 }
