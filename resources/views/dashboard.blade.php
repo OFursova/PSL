@@ -14,4 +14,5 @@
             </div>
         </div>
     </div>
+    <p>Roles and permissions block will be here</p>
 </x-app-layout>
