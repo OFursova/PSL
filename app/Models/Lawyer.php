@@ -32,7 +32,7 @@ class Lawyer extends User
 
     public function position()
     {
-        return 'Partner';
+        return $this->belongsTo(Position::class, 'position_id', 'id');
     }
 
     public function cases()

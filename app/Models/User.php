@@ -53,4 +53,5 @@ class User extends Authenticatable
     {
        return $value ? $value : '/images/no_image.jpg';
     }
+
 }

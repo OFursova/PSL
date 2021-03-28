@@ -6,11 +6,11 @@
     </x-slot>
 
     <x-info-card x-data="cases()" x-init="fetchCases()">
-        <x-slot name="title">My cases:</x-slot>
+        <x-slot name="title">My cases in progress:</x-slot>
             <ol class="px-4">
-                <template x-for="item in cases" :key="item.id">
+                <template x-for="(item, index) in cases" :key="item.id">
                     <template x-if="!item.result">
-                        <li class="list-decimal"><span x-text="item.name"></span> <span class="text-gray-600" x-text="item.description"></span></li>
+                        <li class="list-decimal"><p x-text="item.name"></p><p class="text-gray-600" x-text="item.description"></p></li>
                     </template>
                 </template>
             </ol>
@@ -20,17 +20,24 @@
     </x-info-card>
 
     <x-info-card x-data="cases()" x-init="fetchCases()">
-        <x-slot name="title">My {{Auth::user()->role_id == 3 ? 'lawyers' : 'clients'}}:</x-slot>
-        <ol class="px-4">
-            <template x-for="item in cases" :key="item.id">
-                <template x-if="!item.result">
-                    <li class="list-decimal"><span x-text="item.name"></span> <span x-text="item.description"></span></li>
+        <x-slot name="title">My finished cases:</x-slot>
+            <ol class="px-4">
+                <template x-for="(item, index) in cases" :key="item.id">
+                    <template x-if="item.result != null">
+                        <li class="list-decimal"><span x-text="item.name"></span> on <span class="text-gray-600" x-text="item.description"></span>
+                            <template x-if="item.result == 0">
+                            <span class="ml-2 px-2 rounded bg-red-400">Lost</span>
+                            </template>
+                            <template x-if="item.result == 1">
+                            <span class="ml-2 px-2 rounded bg-green-400">Won</span>
+                            </template>
+                        </li>
+                    </template>
                 </template>
-            </template>
-        </ol>
-            <template x-if="nothingToShow">
-                <p>Your lawyer will be shown here</p>
-            </template>
+            </ol>
+                <template x-if="nothingToShow">
+                    <p>Your cases will be shown here</p>
+                </template>
     </x-info-card>
 
 <script>
@@ -60,5 +67,6 @@
                 },
             };
         }
+
 </script>
 </x-app-layout>

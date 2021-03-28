@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Lawyer;
 use App\Models\LegalCase;
+use App\Models\Position;
 use App\Models\Role;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -30,6 +31,8 @@ class MainController extends Controller
         //dd(Lawyer::findOrFail(2)->cases);
         //dd(LegalCase::find(26)->lawyers);
         //dd(Role::find(1)->permissions);
+        //dd(Lawyer::find(2)->position);
+        dd(Position::find(3)->lawyers);
         return view('home');
     }
 

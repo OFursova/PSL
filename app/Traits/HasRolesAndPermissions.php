@@ -5,6 +5,7 @@ use App\Models\Permission;
 use App\Models\Role;
 
 trait HasRolesAndPermissions{
+    
     public function roles()
     {
         return $this->belongsTo(Role::class, 'role_id', 'id');
