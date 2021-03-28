@@ -32,17 +32,8 @@ class MainController extends Controller
         //dd(LegalCase::find(26)->lawyers);
         //dd(Role::find(1)->permissions);
         //dd(Lawyer::find(2)->position);
-        dd(Position::find(3)->lawyers);
+        //dd(Position::find(3)->lawyers);
         return view('home');
-    }
-
-    public function test()
-    {
-        //$user = User::find(6)->roles;
-        //$user = Lawyer::firstOrFail()->attachments;
-        $user = Lawyer::firstOrFail()->specializations->pluck('name');
-        dd($user);
-        //return view('test');
     }
 
     /**
@@ -56,7 +47,7 @@ class MainController extends Controller
     }
 
     /**
-     * Show the Contact Us page.
+     * Show the Contact Us page with form.
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
@@ -77,13 +68,4 @@ class MainController extends Controller
         return back()->with('success', 'Thanks!');
     }
 
-    /**
-     * Show the Team page with list of partners and lawyers.
-     *
-     * @return \Illuminate\Contracts\Support\Renderable
-     */
-    public function team()
-    {
-        # code...
-    }
 }

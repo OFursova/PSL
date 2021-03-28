@@ -88,10 +88,11 @@
         <div class="max-w-6xl mx-auto sm:px-6 lg:px-8" x-data="lawyers()" x-init="fetchLawyers()">
             <h2 class="text-2xl mx-auto py-4 text-indigo-500 text-center">Our team:</h2>  
             <div class="flex justify-between items-start flex-wrap">
-                <template x-for="lawyer in lawyers" :key="lawyer.id">
-                    <div class="flex flex-col items-center justify-between w-1/6 p-3 m-3 border shadow rounded bg-white">
+                <template x-for="lawyer in lawyers" :key="lawyer.name">
+                    <div class="flex flex-col items-center justify-between lg:w-1/6 md:w-1/5 sm:w-1/4 p-3 m-3 border shadow rounded bg-white">
                         <div class="h-40 overflow-hidden"><img :src="lawyer.avatar" :alt="lawyer.name" class="w-full"></div>
-                        <h3 class="py-3 text-lg font-semibold text-indigo-600" x-text="lawyer.name"></h3>
+                        <h3 class="pt-3 text-lg font-semibold text-indigo-600" x-text="lawyer.name"></h3>
+                        <p class="text-sm py-1" x-text="lawyer.position"></p>
                         <template x-for="spec in lawyer.specialization">
                         <p class="text-gray-400 text-sm" x-text="spec.name"></p>
                         </template>

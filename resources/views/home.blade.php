@@ -47,7 +47,8 @@
     if (userRole === 2) role = 'lawyers'
     else if (userRole === 3) role = 'clients'
     else role = '';
-    
+    let token = {{Auth::user()->api_token}};
+
         function cases() {
             return {
                 cases: [],
@@ -55,7 +56,7 @@
                 fetchCases: function () {
                     this.error = this.cases = null;
                     axios
-                        .get('/api/'+role+'/'+id)
+                        .get('/api/'+role+'/'+id+'?api_token='+token)
                         .then((response) => {
                             console.log(response.data.data.cases);
                             this.nothingToShow = false;
