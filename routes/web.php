@@ -4,7 +4,9 @@ use App\Http\Controllers\Admin\LawyerController;
 use App\Http\Controllers\CaseController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\MainController;
+use App\Mail\CaseRequest;
 use App\Models\LegalCase;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -25,6 +27,11 @@ require __DIR__.'/auth.php';
 Route::get('/', function () {
     return view('welcome');
 });
+
+// Route::get('/email', function () {
+//     // Mail::to('email@email.com')->send(new CaseRequest());
+//     return new CaseRequest(LegalCase::find(1));
+// });
 
 Route::get('/about', [MainController::class, 'about'])->name('about');
 // Route::get('/cases', [CaseController::class, 'index'])->name('cases');

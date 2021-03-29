@@ -19,7 +19,7 @@ class UserResource extends JsonResource
             'name' => $this->name,
             'email' => $this->email,
             'avatar' => $this->avatar,
-            'phone' => $this->phone,
+            'phone' => $this->phone, // $this->when(Auth::user(), $this->phone)
             'address' => $this->address,
             'role' => ['id' => $this->roles->id, 'name' => $this->roles->name, 'slug' => $this->roles->slug],
             'specialization' => $this->specs,

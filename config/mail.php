@@ -43,6 +43,8 @@ return [
             'password' => env('MAIL_PASSWORD'),
             'timeout' => null,
             'auth_mode' => null,
+            'from' => ['address' => 'psl-administator@gmail.com', 'name' => 'PSL'],
+            'reply_to' => ['address' => 'support.psl@gmail.com', 'name' => 'PSL Support'],
         ],
 
         'ses' => [
