@@ -2,7 +2,7 @@
     <x-slot name="header">
         <div class="flex items-center justify-between">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight flex-1">
-            {{ __('Cases in progress') }}
+            {{ __('Cases') }}
         </h2>
         {{-- only for lawyers and admin --}}
         
@@ -14,7 +14,7 @@
 
     {{-- To do - sorting by spec --}}
     
-    <div class="py-2 max-w-7xl w-full mx-auto sm:px-6 lg:px-8 my-6">
+    <div id="dataTable" class="display py-2 max-w-7xl w-full mx-auto sm:px-6 lg:px-8 my-6">
             <table class="table-auto w-full bg-white shadow-md rounded">
                 <thead>
                   <tr class="bg-gray-200 text-gray-600 uppercase text-md md:text-sm sm:text-xs leading-normal">
@@ -50,4 +50,10 @@
                 </tbody>
               </table>
     </div>
+
+    <script>
+        $(document).ready( function () {
+            $('#dataTable').DataTable();
+        } );
+    </script>
 </x-app-layout>
