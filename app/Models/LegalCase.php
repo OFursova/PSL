@@ -35,6 +35,9 @@ class LegalCase extends Model
     
     public function scopeFiltered(Builder $query) {
         return $query->select(['legal_cases.*'])
+            ->when(request('name'), function (Builder $query, $name) {
+                return $query->where('name', 'LIKE', "%{$name}%");
+            })
             ->when(request('spec'), function (Builder $query, $spec) {
                 return $query->whereHas('specs', function (Builder $query) use ($spec) {
                     $query->where('name', 'LIKE', "%{$spec}%");

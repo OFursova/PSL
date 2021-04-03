@@ -7,13 +7,8 @@ use App\Mail\CaseRequest;
 use App\Models\Client;
 use App\Models\Lawyer;
 use App\Models\LegalCase;
-use App\Models\Position;
-use App\Models\Role;
 use App\Models\Spec;
-use App\Models\User;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
 class MainController extends Controller
@@ -53,7 +48,7 @@ class MainController extends Controller
     public function getContacts(UpdateContactUsRequest $request)
     {
         $validData = $request->validated();
-        if(isset($validData['attachment'])) $validData['attachment'] = $this->saveAttachment($request);
+        if(isset($validData['attachment'])) $validData['attachment'] = parent::saveAttachment($request);
         $clientData = [
             'name' => $validData['name'],
             'email' => $validData['email'],
@@ -81,23 +76,6 @@ class MainController extends Controller
         Mail::to($validData['email'])->send(new CaseRequest());
 
         return back()->with('success', 'Your application has been sent!');
-    }
-
-    public function saveAttachment(UpdateContactUsRequest $request)
-    {
-        $allowed = ['txt', 'doc', 'docx', 'pdf', 'odt', 'zip', 'rar'];
-        $extension = $request->file('attachment')->extension();
-       
-        if (in_array($extension, $allowed)) {
-            $name = $request->file('attachment')->getClientOriginalName();
-            Storage::disk('public')->putFileAs(
-                'files/',
-                $request->file('attachment'),
-                $name
-              );
-        }
-
-        return 'storage/files/'.$name;
     }
 
 }

@@ -4,15 +4,22 @@
         <h2 class="font-semibold text-xl text-gray-800 leading-tight flex-1">
             {{ __('Lawyers') }}
         </h2>
+
+        <form action="/admin/lawyers/filter" method="POST" class="flex items-center justify-between flex-wrap">
+            @csrf
+        <x-filter-l-select name="type" />
+        <x-input class="block mt-1 w-30 mx-3" type="text" name="filter" :value="old('filter')" autofocus />
+        <x-button class="my-1 mr-4 self-end bg-purple-500 hover:bg-purple-700 active:bg-purple-900">
+            {{ __('Filter') }}
+        </x-button>
+        </form>
+
         {{-- only for lawyers and admin --}}
-        
-        <x-button-link href="{{asset('admin/lawyers/create')}}" class="ml-4 self-end bg-green-500 hover:bg-green-700 active:bg-green-900">
+        <x-button-link href="{{asset('admin/lawyers/create')}}" class="ml-4 my-1 self-end bg-green-500 hover:bg-green-700 active:bg-green-900">
                 {{ __('Add new lawyer') }}
         </x-button-link>
     </div>
     </x-slot>
-
-    {{-- To do - sorting by spec --}}
     
     <div class="py-2 max-w-7xl w-full mx-auto sm:px-6 lg:px-8 my-6">
             <table class="table-auto w-full bg-white shadow-md rounded">
@@ -29,8 +36,11 @@
                     @foreach ($lawyers as $lawyer)
                     <tr class="border-b border-gray-200 hover:bg-gray-100">
                     <td class="py-3 px-6 text-center"><img class="w-20 rounded" src="{{asset($lawyer->avatar)}}" alt="{{$lawyer->name}}"></td> 
-                    <td class="py-3 px-6 text-left whitespace-normal">{{$lawyer->name}}</td>
-                    <td class="py-3 px-6 text-center max-w-xs">{{$lawyer->specs ? $lawyer->specs->pluck('name')->join(',') : ''}}</td>
+                    <td class="py-3 px-6 text-left whitespace-normal">
+                        <p class="font-semibold my-2">{{$lawyer->name}}</p>
+                        <p>{{$lawyer->position ? $lawyer->position->name : ''}}</p>
+                    </td>
+                    <td class="py-3 px-6 text-center max-w-xs">{{$lawyer->specs ? $lawyer->specs->pluck('name')->join(', ') : ''}}</td>
                     <td class="py-3 px-6 text-center">{{$lawyer->email}}</td>
                     <td class="py-3 px-6 text-center">{{$lawyer->phone}}</td>
                     <td class="py-3 px-6 text-center">

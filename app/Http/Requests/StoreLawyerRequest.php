@@ -32,6 +32,7 @@ class StoreLawyerRequest extends FormRequest
             'phone' => 'nullable|string',
             'address' => 'nullable|string',
             'role_id' => 'nullable|numeric|exists:roles,id',
+            'position_id' => 'nullable|numeric|exists:positions,id'
         ];
     }
 }

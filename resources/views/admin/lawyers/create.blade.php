@@ -4,7 +4,7 @@
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
             {{ __('Add new lawyer') }}
         </h2>
-        <x-button-link href="{{asset('/cases')}}" class="ml-4 self-end bg-gray-500 hover:bg-gray-700 active:bg-gray-900">
+        <x-button-link href="{{url()->previous()}}" class="ml-4 self-end bg-gray-500 hover:bg-gray-700 active:bg-gray-900">
             {{ __('Back') }}
         </x-button-link>
         </div>
@@ -55,6 +55,12 @@
             <x-input id="address" class="block mt-1 w-full" type="text" name="address" :value="old('address')" autofocus />
         </div>
 
+        <!-- Select for position -->
+        <div>
+            <x-label for="position" :value="__('Position:')" />
+            <x-select id="position" name="position_id" autocomplete="position" :collection="$positions" :selected="null" />
+        </div>
+
         <!-- Select for specialization -->
         <div>
             <x-label for="spec" :value="__('Specialization:')" />
@@ -63,9 +69,8 @@
 
         {{-- Select for cases --}}
         <div>
-            <x-label for="cases" :value="__('Assign cases:')" />
-            {{-- <x-select id="cases" name="cases" autocomplete="cases" :collection="$cases" :selected="null" /> --}}
-            <x-input type="text"></x-input>
+            <x-label for="case" :value="__('Assign cases:')" />
+            <x-select id="case" name="case" autocomplete="case" :collection="$cases" :selected="null" autofocus />
         </div>
 
         <div class="flex items-center justify-center mt-6">

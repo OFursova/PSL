@@ -6,34 +6,37 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreLawyerRequest;
 use App\Models\Lawyer;
 use App\Models\LegalCase;
+use App\Models\Position;
 use App\Models\Spec;
-use Illuminate\Support\Facades\Storage;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 class LawyerController extends Controller
 {
     public function index()
     {
-        $lawyers = Lawyer::get();
+        $lawyers = Lawyer::filtered()->get();
         return view('admin.lawyers.index', compact('lawyers'));
     }
 
     public function create()
     {
-        $specs = Spec::all()->pluck('name');
-        $cases = LegalCase::all()->pluck('id', 'name', 'description');
-        return view('admin.lawyers.create', compact('specs', 'cases'));
+        $specs = Spec::all()->pluck('name', 'id');
+        $cases = LegalCase::all()->pluck('name', 'id');
+        $positions = Position::all()->pluck('name', 'id');
+        return view('admin.lawyers.create', compact('specs', 'cases', 'positions'));
     }
 
     public function store(StoreLawyerRequest $request)
     {
         $validData = $request->validated();
-        if(isset($validData['avatar'])) $validData['avatar'] = $this->saveAvatar($request);
+        if(isset($validData['password'])) $validData['password'] = Hash::make($validData['password']);
+        if(isset($validData['avatar'])) $validData['avatar'] = parent::saveAvatar($request);
         $lawyer = Lawyer::create($validData);
 
-        $spec_id = Spec::where('name', $request->get('spec'))->pluck('id');
-        $case_id = LegalCase::where('name', $request->get('case'));
-        $lawyer->specs()->syncWihoutDetaching($spec_id);
-        $lawyer->cases()->syncWihoutDetaching($case_id);
+        $lawyer->specs()->syncWithoutDetaching($request->spec);
+        $lawyer->cases()->syncWithoutDetaching($request->case);
+        
         return redirect('/admin/lawyers');
     }
 
@@ -45,21 +48,24 @@ class LawyerController extends Controller
 
     public function edit(Lawyer $lawyer)
     {
-        $specs = Spec::all()->pluck('name');
-        return view('admin.lawyers.edit', compact('lawyer', 'specs'));
+        $specs = Spec::all()->pluck('name', 'id');
+        $cases = LegalCase::all()->pluck('name', 'id');
+        $positions = Position::all()->pluck('name', 'id');
+        return view('admin.lawyers.edit', compact('lawyer', 'specs', 'cases', 'positions'));
     }
 
     public function update(StoreLawyerRequest $request, Lawyer $lawyer)
     {
         $validData = $request->validated();
-        if(isset($validData['avatar'])) $validData['avatar'] = $this->saveAvatar($request);
-        
+        $validData['password'] ? $validData['password'] = Hash::make($validData['password']) : $validData['password'] = $lawyer->password;
+        if(isset($validData['avatar'])) $validData['avatar'] = parent::saveAvatar($request);
+    
         $lawyer = Lawyer::findOrFail($lawyer->id);
         $lawyer->update($validData);
 
-        $spec_id = Spec::where('name', $request->get('spec'))->pluck('id');
-        $lawyer->specs()->syncWithoutDetaching($spec_id);
-        // TO DO sync cases
+        $lawyer->specs()->syncWithoutDetaching($request->spec);
+        $lawyer->cases()->syncWithoutDetaching($request->case);
+
         return redirect('/admin/lawyers');
     }
 
@@ -71,7 +77,7 @@ class LawyerController extends Controller
 
     public function getAll()
     {
-        $lawyers = Lawyer::paginate(20);
+        $lawyers = Lawyer::filtered()->get();
         return view('lawyers.index', compact('lawyers'));
     }
 
@@ -88,36 +94,30 @@ class LawyerController extends Controller
         return view('lawyers.edit', compact('lawyer', 'specs'));
     }
 
-    public function saveChanges(StoreLawyerRequest $request, $id)
+    public function saveChanges(StoreLawyerRequest $request, Lawyer $lawyer)
     {
         $validData = $request->validated();
-        if(isset($validData['avatar'])) $validData['avatar'] = $this->saveAvatar($request);
+        $validData['password'] ? $validData['password'] = Hash::make($validData['password']) : $validData['password'] = $lawyer->password;
+        if(isset($validData['avatar'])) $validData['avatar'] = parent::saveAvatar($request);
         
-        $lawyer = Lawyer::findOrFail($id); 
+        $lawyer = Lawyer::findOrFail($lawyer->id); 
         $lawyer->update($validData);
 
-        $spec_id = Spec::where('name', $request->get('spec'))->pluck('id');
-        $lawyer->specs()->syncWithoutDetaching($spec_id);
-        // TO DO sync cases
-        return redirect('/home');
+        $lawyer->specs()->syncWithoutDetaching($request->spec);
+        $lawyer->cases()->syncWithoutDetaching($request->case);
+
+        return redirect('/home');   
     }
 
-
-    public function saveAvatar(StoreLawyerRequest $request)
+    public function filter(Request $request)
     {
-        $allowed = ['png', 'jpg', 'jpeg', 'webp', 'jfif'];
-        $extension = $request->file('avatar')->extension();
-       
-        if (in_array($extension, $allowed)) {
-            $name = $request->file('avatar')->getClientOriginalName();
-            //$path = $request->file('avatar')->storeAs('images', $name, 'img');
-            Storage::disk('public')->putFileAs(
-                'avatars/',
-                $request->file('avatar'),
-                $name
-              );
-        }
+        $path = '/lawyers?'.$request['type'].'='.$request['filter'];
+        return redirect($path);
+    }
 
-        return 'storage/avatars/'.$name;
+    public function adminFilter(Request $request)
+    {
+        $path = '/admin/lawyers?'.$request['type'].'='.$request['filter'];
+        return redirect($path);
     }
 }

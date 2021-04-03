@@ -4,9 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreLegalCaseRequest;
 use App\Http\Requests\UpdateLegalCaseRequest;
+use App\Models\Client;
+use App\Models\Lawyer;
 use App\Models\LegalCase;
 use App\Models\Spec;
-use App\Models\Specialization;
 use Illuminate\Http\Request;
 
 class CaseController extends Controller
@@ -29,8 +30,10 @@ class CaseController extends Controller
      */
     public function create()
     {
-        $specs = Spec::all()->pluck('name');
-        return view('cases.create')->with('specs', $specs);
+        $specs = Spec::all()->pluck('name', 'id');
+        $lawyers = Lawyer::all()->pluck('name', 'id');
+        $clients = Client::all()->pluck('name', 'id');
+        return view('cases.create', compact('specs', 'lawyers', 'clients'));
     }
 
     /**
@@ -42,11 +45,13 @@ class CaseController extends Controller
     public function store(StoreLegalCaseRequest $request)
     {
         $validData = $request->validated();
+        if(isset($validData['attachment'])) $validData['attachment'] = parent::saveAttachment($request);
         $case = LegalCase::create($validData);
 
-        $spec_id = Spec::where('name', $request->get('spec'))->pluck('id');
-        $case->specs()->sync($spec_id);
-        // TO DO sync users
+        $case->specs()->syncWithoutDetaching($request->spec);
+        $case->lawyers()->syncWithoutDetaching($request->lawyer);
+        $case->clients()->syncWithoutDetaching($request->client);
+
         return redirect('/cases');
     }
 
@@ -71,8 +76,10 @@ class CaseController extends Controller
     public function edit(LegalCase $legalCase, $id)
     {
         $case = LegalCase::findOrFail($id);
-        $specs = Spec::all()->pluck('name');
-        return view('cases.edit', compact('case', 'specs'));
+        $specs = Spec::all()->pluck('name', 'id');
+        $lawyers = Lawyer::all()->pluck('name', 'id');
+        $clients = Client::all()->pluck('name', 'id');
+        return view('cases.edit', compact('case', 'specs', 'lawyers', 'clients'));
     }
 
     /**
@@ -85,13 +92,13 @@ class CaseController extends Controller
     public function update(UpdateLegalCaseRequest $request, $id)
     {
         $validData = $request->validated();
-        
-        $legalCase = LegalCase::findOrFail($id);
-        $legalCase->update($validData);
+        if(isset($validData['attachment'])) $validData['attachment'] = parent::saveAttachment($request);
+        $case = LegalCase::findOrFail($id);
+        $case->update($validData);
 
-        $spec_id = Spec::where('name', $request->get('spec'))->pluck('id');
-        $legalCase->specs()->sync($spec_id);
-        // TO DO sync users
+        $case->specs()->syncWithoutDetaching($request->spec);
+        $case->lawyers()->syncWithoutDetaching($request->lawyer);
+        $case->clients()->syncWithoutDetaching($request->client);
         return redirect('/cases');
     }
 
@@ -118,4 +125,5 @@ class CaseController extends Controller
         
         return redirect($path);
     }
+
 }

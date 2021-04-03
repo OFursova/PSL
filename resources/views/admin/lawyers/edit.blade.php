@@ -4,7 +4,7 @@
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
             {{ __('Edit lawyer\'s profile') }}
         </h2>
-        <x-button-link href="{{asset('admin/lawyers')}}" class="ml-4 self-end bg-gray-500 hover:bg-gray-700 active:bg-gray-900">
+        <x-button-link href="{{url()->previous()}}" class="ml-4 self-end bg-gray-500 hover:bg-gray-700 active:bg-gray-900">
             {{ __('Back') }}
         </x-button-link>
         </div>
@@ -34,7 +34,7 @@
         <!-- Password -->
         <div>
             <x-label for="password" :value="__('Password:')" />
-            <x-input id="password" class="block mt-1 w-full" type="password" name="password" :value="$lawyer->password" autofocus />
+            <x-input id="password" class="block mt-1 w-full" type="password" name="password" autofocus />
         </div>
         
         <!-- Email -->
@@ -55,17 +55,22 @@
             <x-input id="address" class="block mt-1 w-full" type="text" name="address" :value="$lawyer->address" autofocus />
         </div>
 
+        <!-- Select for position -->
+        <div>
+            <x-label for="position" :value="__('Position:')" />
+            <x-select id="position" name="position_id" autocomplete="position" :collection="$positions" :selected="$lawyer->positions ? $lawyer->positions->pluck('name')->first() : null" />
+        </div>
+
         <!-- Select for specialization -->
         <div>
             <x-label for="spec" :value="__('Specialization:')" />
-            <x-select id="spec" name="spec" autocomplete="specialization" :collection="$specs" :selected="$lawyer->specs->pluck('name')->join(',')" />
+            <x-select id="spec" name="spec" autocomplete="specialization" :collection="$specs" :selected="$lawyer->specs ? $lawyer->specs->pluck('name')->first() : null" />
         </div>
 
         {{-- Select for cases --}}
         <div>
-            <x-label for="cases" :value="__('Assign cases:')" />
-            {{-- <x-select id="cases" name="cases" autocomplete="cases" :collection="$cases" :selected="null" /> --}}
-            <x-input type="text"></x-input>
+            <x-label for="case" :value="__('Assign cases:')" />
+            <x-select id="case" name="case" autocomplete="case" :collection="$cases" :selected="$lawyer->cases ? $lawyer->cases->pluck('name')->first() : null" />
         </div>
 
         <div class="flex items-center justify-center mt-6">

@@ -4,7 +4,7 @@
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
             {{ __('Edit case') }}
         </h2>
-        <x-button-link href="{{asset('cases/'.$case->id)}}" class="ml-4 self-end bg-gray-500 hover:bg-gray-700 active:bg-gray-900">
+        <x-button-link href="{{url()->previous()}}" class="ml-4 self-end bg-gray-500 hover:bg-gray-700 active:bg-gray-900">
             {{ __('Back') }}
         </x-button-link>
         </div>
@@ -13,12 +13,11 @@
     <!-- Validation Errors -->
     <x-auth-validation-errors class="mb-4" :errors="$errors" />
     
-    <!-- Form -->
-    {{-- {!! Form::model($case, ['url' => '/cases/'.$case->id, 'method' => 'put']) !!} --}}
-   
-    <form method="POST" action="/cases/{{$case->id}}">
+    <!-- Form --> 
+    <form method="POST" action="/cases/{{$case->id}}" enctype="multipart/form-data">
         @csrf
         <input name="_method" type="hidden" value="PUT">
+        <input type="hidden" name="caseId" value="{{$case->id}}">
         <!-- Case name -->
         <div>
             <x-label for="name" :value="__('Case name')" />
@@ -56,21 +55,36 @@
         <!-- Result -->
         <div class="flex items-center justify-start my-4">
             <x-label for="won" class="mx-2" value="Won" />
-            <x-input id="won" class="w-5" type="radio" name="result" value="1"/>
+            <x-input id="won" class="w-5" type="radio" name="result" value="1" />
             <x-label for="lost" class="mx-2" value="Lost" />
-            <x-input id="lost" class="w-5" type="radio" name="result" value="0"/>
+            <x-input id="lost" class="w-5" type="radio" name="result" value="0" />
         </div>
-        
-        {{-- Select for lawyers/users --}}
 
         <!-- Select for specialization -->
         <div>
             <x-label for="spec" :value="__('Specialization:')" />
 
-            <x-select id="spec" name="spec" autocomplete="specialization" :collection="$specs" :selected="$case->specs->pluck('name')->join(',')"/>
+            <x-select id="spec" name="spec" autocomplete="specialization" :collection="$specs" :selected="$case->specs ? $case->specs->pluck('name')->first() : old('spec')"/>
         </div>
 
-        <!-- Attach documents -->
+        {{-- Select for lawyers/users --}}
+        <div>
+            <x-label for="lawyer" :value="__('Assign a lawyer (optional):')" />
+
+            <x-select id="lawyer" name="lawyer" autocomplete="lawyer" :collection="$lawyers" :selected="$case->lawyers ? $case->lawyers->pluck('name')->first() : old('lawyer')" autofocus />
+        </div>
+
+        <div>
+            <x-label for="client" :value="__('Bind to client (optional):')" />
+            
+            <x-select id="client" name="client" autocomplete="client" :collection="$clients" :selected="$case->clients ? $case->clients->pluck('name')->first() : old('client')" autofocus />
+        </div>
+
+        {{-- Attach documents --}}
+        <div>
+            <x-label for="attachment" :value="__('Attachments (optional):')" />
+            <x-input id="attachment" class="block mt-4 w-full" type="file" name="attachment" autofocus />
+        </div>
 
         <div class="flex items-center justify-center mt-6">
             <x-button class="ml-4 ">
@@ -78,6 +92,5 @@
             </x-button>
         </div>
     </form>
-    {{-- {!! Form::close() !!} --}}
     </x-form>
 </x-app-layout>
