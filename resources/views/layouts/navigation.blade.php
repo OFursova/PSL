@@ -6,7 +6,7 @@
                 <!-- Logo -->
                 <div class="flex-shrink-0 flex items-center">
                     @if (Auth::user()->roles->slug == 'admin')
-                    <a href="{{ route('dashboard') }}"> 
+                    <a href="/admin/dashboard"> 
                         <x-application-logo class="block h-10 w-auto fill-current text-gray-600" />
                     </a>
                     @else
@@ -22,7 +22,7 @@
                 <!-- Navigation Links -->
                 <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
                     @if (Auth::user()->roles->slug == 'admin')
-                    <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
+                    <x-nav-link href="/admin/dashboard" :active="request()->routeIs('dashboard')">
                         {{ __('Dashboard') }}
                     </x-nav-link>
                     @endif
@@ -96,7 +96,7 @@
     <div :class="{'block': open, 'hidden': ! open}" class="hidden sm:hidden">
         <div class="pt-2 pb-3 space-y-1">
             @if (Auth::user()->roles->slug == 'admin')
-            <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
+            <x-responsive-nav-link href="/admin/dashboard" :active="request()->routeIs('dashboard')">
                 {{ __('Dashboard') }}
             </x-responsive-nav-link>
             @endif

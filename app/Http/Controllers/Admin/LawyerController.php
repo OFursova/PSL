@@ -5,8 +5,8 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreLawyerRequest;
 use App\Models\Lawyer;
+use App\Models\LegalCase;
 use App\Models\Spec;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
 class LawyerController extends Controller
@@ -14,14 +14,14 @@ class LawyerController extends Controller
     public function index()
     {
         $lawyers = Lawyer::get();
-        //return $lawyers;
         return view('admin.lawyers.index', compact('lawyers'));
     }
 
     public function create()
     {
         $specs = Spec::all()->pluck('name');
-        return view('admin.lawyers.create')->with('specs', $specs);
+        $cases = LegalCase::all()->pluck('id', 'name', 'description');
+        return view('admin.lawyers.create', compact('specs', 'cases'));
     }
 
     public function store(StoreLawyerRequest $request)
@@ -31,8 +31,9 @@ class LawyerController extends Controller
         $lawyer = Lawyer::create($validData);
 
         $spec_id = Spec::where('name', $request->get('spec'))->pluck('id');
-        $lawyer->specs()->sync($spec_id);
-        // TO DO sync cases
+        $case_id = LegalCase::where('name', $request->get('case'));
+        $lawyer->specs()->syncWihoutDetaching($spec_id);
+        $lawyer->cases()->syncWihoutDetaching($case_id);
         return redirect('/admin/lawyers');
     }
 
@@ -41,7 +42,6 @@ class LawyerController extends Controller
         $lawyer = Lawyer::findOrFail($lawyer->id);
         return view('admin.lawyers.show', compact('lawyer'));
     }
-
 
     public function edit(Lawyer $lawyer)
     {
@@ -58,7 +58,7 @@ class LawyerController extends Controller
         $lawyer->update($validData);
 
         $spec_id = Spec::where('name', $request->get('spec'))->pluck('id');
-        $lawyer->specs()->sync($spec_id);
+        $lawyer->specs()->syncWithoutDetaching($spec_id);
         // TO DO sync cases
         return redirect('/admin/lawyers');
     }
@@ -80,6 +80,28 @@ class LawyerController extends Controller
         $lawyer = Lawyer::findOrFail($id);
         return view('lawyers.show', compact('lawyer'));
     }
+
+    public function editLawyer($id)
+    {
+        $lawyer = Lawyer::findOrFail($id);
+        $specs = Spec::all()->pluck('name');
+        return view('lawyers.edit', compact('lawyer', 'specs'));
+    }
+
+    public function saveChanges(StoreLawyerRequest $request, $id)
+    {
+        $validData = $request->validated();
+        if(isset($validData['avatar'])) $validData['avatar'] = $this->saveAvatar($request);
+        
+        $lawyer = Lawyer::findOrFail($id); 
+        $lawyer->update($validData);
+
+        $spec_id = Spec::where('name', $request->get('spec'))->pluck('id');
+        $lawyer->specs()->syncWithoutDetaching($spec_id);
+        // TO DO sync cases
+        return redirect('/home');
+    }
+
 
     public function saveAvatar(StoreLawyerRequest $request)
     {

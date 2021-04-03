@@ -11,7 +11,7 @@ class Position extends Model
 
     public function lawyers()
     {        
-        return $this->hasMany(Lawyer::class, 'position_id', 'id');
+        return $this->hasMany(Lawyer::class);
 
     }
 }

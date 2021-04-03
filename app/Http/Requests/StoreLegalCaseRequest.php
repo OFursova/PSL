@@ -31,6 +31,7 @@ class StoreLegalCaseRequest extends FormRequest
             'start' => 'nullable|date_format:Y-m-d',
             'end' => 'nullable|date_format:Y-m-d',
             'result' => 'nullable|boolean',
+            'attachment' => 'nullable'
         ];
     }
 }

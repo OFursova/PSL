@@ -10,32 +10,20 @@
     {{-- To do - sorting by spec --}}
     
     <div class="py-2 max-w-7xl w-full mx-auto sm:px-6 lg:px-8 my-6">
-            <table class="table-auto w-full bg-white shadow-md rounded">
-                <thead>
-                  <tr class="bg-gray-200 text-gray-600 uppercase text-md md:text-sm sm:text-xs leading-normal">
-                    <th class="py-3 px-6 text-center" colspan="2">Lawyer</th>
-                    <th class="py-3 px-6 text-center">Specialization</th>
-                    <th class="py-3 px-6 text-center">Email</th>
-                    <th class="py-3 px-6 text-center">Phone</th>
-                    <th class="py-3 px-6 text-center">Actions</th>
-                  </tr>
-                </thead>
-                <tbody class="text-gray-600 text-sm font-light">
-                    @foreach ($lawyers as $lawyer)
-                    <tr class="border-b border-gray-200 hover:bg-gray-100">
-                    <td class="py-3 px-6 text-center"><img class="w-20 rounded" src="{{asset($lawyer->avatar)}}" alt="{{$lawyer->name}}"></td> 
-                    <td class="py-3 px-6 text-left whitespace-normal">{{$lawyer->name}}</td>
-                    <td class="py-3 px-6 text-center max-w-xs">{{$lawyer->specs ? $lawyer->specs->pluck('name')->join(',') : ''}}</td>
-                    <td class="py-3 px-6 text-center">{{$lawyer->email}}</td>
-                    <td class="py-3 px-6 text-center">{{$lawyer->phone}}</td>
-                    <td class="py-3 px-6 text-center">
-                        <div class="flex item-center justify-center flex-wrap">
+        <div class="flex justify-between items-start flex-wrap">
+            @foreach ($lawyers as $lawyer)
+                <div class="flex flex-col items-center justify-between lg:w-1/6 md:w-1/5 sm:w-1/4 p-3 m-3 border shadow rounded bg-white">
+                    <div class="h-40 overflow-hidden"><img src="{{asset($lawyer->avatar)}}" alt="{{$lawyer->name}}" class="w-full rounded"></div>
+                    <h3 class="pt-3 text-lg font-semibold text-indigo-600">{{$lawyer->name}}</h3>
+                    <p class="text-sm py-1">{{$lawyer->position->name ?? ''}}</p>
+                    <p class="text-gray-400 text-sm">{{$lawyer->specs ? $lawyer->specs->pluck('name')->join(',') : ''}}</p>
+                    <p class="text-sm py-1">{{$lawyer->email}}</p>
+                    <p class="text-sm py-1">{{$lawyer->phone}}</p>
+                    <div class="flex item-center justify-center flex-wrap">
                         <x-button-link href="/lawyers/{{$lawyer->id}}" class="m-3 bg-blue-500 hover:bg-blue-700 active:bg-blue-900">See details</x-button-link>
-                        </div>
-                    </td>
-                    </tr>
-                    @endforeach
-                </tbody>
-              </table>
+                    </div>
+                </div>
+            @endforeach          
+        </div>
     </div>
 </x-app-layout>

@@ -11,9 +11,13 @@
     </x-slot>
     <div class="bg-gray-50">
         <div class="max-w-7xl mx-auto py-3 px-4 sm:px-6 lg:px-8 lg:flex lg:items-center lg:justify-between">
-            <p class="p-3 text-justify">
+            @if (session('success'))
+            <div class="w-5/6 mx-auto p-3 text-center bg-green-500 rounded shadow text-white text-lg">{{session('success')}}</div>
+            @else
+            <p class="p-3 text-center">
                 Give us brief information about your case or just describe a situation.
             </p>
+            @endif
         </div>
     <x-form>
         <!-- Validation Errors -->
@@ -26,17 +30,18 @@
             <x-label for="name" :value="__('Your name:')" />
             <x-input id="name" class="block mt-1 w-full" type="text" name="name" :value="auth()->user()->name" required autofocus />
         </div>
+        <input type="hidden" name="slug" value="">
         <div>
             <x-label for="email" :value="__('Email:')" />
             <x-input id="email" class="block mt-1 w-full" type="email" name="email" :value="auth()->user()->email" required autofocus />
         </div>
         <div>
             <x-label for="phone" :value="__('Contact phone:')" />
-            <x-input id="phone" class="block mt-1 w-full" type="text" name="phone" :value="old('phone')" autofocus />
+            <x-input id="phone" class="block mt-1 w-full" type="text" name="phone" :value="auth()->user()->phone ?? old('phone')" autofocus />
         </div>
         <div>
             <x-label for="address" :value="__('Post address:')" />
-            <x-input id="address" class="block mt-1 w-full" type="text" name="address" :value="old('address')" autofocus />
+            <x-input id="address" class="block mt-1 w-full" type="text" name="address" :value="auth()->user()->address ?? old('address')" autofocus />
         </div>
 
         <div>
@@ -51,8 +56,12 @@
             </x-textarea>
         </div>
         <div>
-            <x-label for="spec" :value="__('Specialization:')" />
+            <x-label for="spec" :value="__('Specialization (optional):')" />
             <x-select id="spec" name="spec" autocomplete="specialization" :collection="$specs" :selected="null" autofocus />
+        </div>
+        <div>
+            <x-label for="lawyer" :value="__('Desired lawyer (optional):')" />
+            <x-select id="lawyer" name="lawyer" autocomplete="lawyer" :collection="$lawyers" :selected="null" autofocus />
         </div>
         <div>
             <x-label for="attachment" :value="__('You can add text file or archive to provide more details about your case:')" />

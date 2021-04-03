@@ -18,8 +18,7 @@ class CaseController extends Controller
      */
     public function index()
     {
-        $cases = LegalCase::latest()->get();
-        //return $cases;
+        $cases = LegalCase::latest()->filtered()->get();
         return view('cases.index', compact('cases'));
     }
 
@@ -106,5 +105,17 @@ class CaseController extends Controller
     {
         $legalCase->destroy($id);
         return redirect('/cases');
+    }
+
+     /**
+     * Display a filtered listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function filter(Request $request)
+    {
+        $path = '/cases?'.$request['type'].'='.$request['filter'];
+        
+        return redirect($path);
     }
 }

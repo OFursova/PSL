@@ -5,7 +5,7 @@
             {{ __('About Us') }}
         </h2>
         @auth
-        <x-button-link href="{{asset('/home')}}" class="ml-4 self-end bg-gray-500 hover:bg-gray-700 active:bg-gray-900">
+        <x-button-link href="{{url()->previous()}}" class="ml-4 self-end bg-gray-500 hover:bg-gray-700 active:bg-gray-900">
             {{ __('Back to Homepage') }}
         </x-button-link>   
         @else      

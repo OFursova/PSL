@@ -1,14 +1,25 @@
 <x-app-layout>
     <x-slot name="header">
-        <div class="flex items-center justify-between">
+        <div class="flex items-center justify-between flex-wrap">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight flex-1">
             {{ __('Cases') }}
         </h2>
+
+        <form action="cases/filter" method="POST" class="flex items-center justify-between flex-wrap">
+            @csrf
+        <x-filter-select name="type" />
+        <x-input class="block mt-1 w-30 mx-3" type="text" name="filter" :value="old('filter')" autofocus />
+        <x-button class="my-1 mr-4 self-end bg-purple-500 hover:bg-purple-700 active:bg-purple-900">
+            {{ __('Filter') }}
+        </x-button>
+        </form>
+
         {{-- only for lawyers and admin --}}
-        
-        <x-button-link href="{{asset('cases/create')}}" class="ml-4 self-end bg-green-500 hover:bg-green-700 active:bg-green-900">
-                {{ __('Add new case') }}
+        @if (auth()->user()->roles->slug != 'client')
+        <x-button-link href="{{asset('cases/create')}}" class="my-1 ml-4 self-end bg-green-500 hover:bg-green-700 active:bg-green-900">
+            {{ __('Add new case') }}
         </x-button-link>
+        @endif
     </div>
     </x-slot>
 
@@ -50,10 +61,4 @@
                 </tbody>
               </table>
     </div>
-
-    <script>
-        $(document).ready( function () {
-            $('#dataTable').DataTable();
-        } );
-    </script>
 </x-app-layout>

@@ -16,7 +16,7 @@ class CreateLegalCasesTable extends Migration
         Schema::create('legal_cases', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('slug')->unique();
+            $table->string('slug')->unique()->nullable();
             $table->text('description');
             $table->date('start')->nullable();
             $table->date('end')->nullable();
