@@ -31,7 +31,8 @@ class ClientController extends Controller
     {
         $validData = $request->validated();
         $client = Client::create($validData);
-        return UserResource::make($client->loadMissing(['roles', 'specs', 'cases']));
+        $client->cases()->syncWithoutDetaching($request->case);
+        return UserResource::make($client->loadMissing(['roles', 'cases']));
     }
 
     /**
@@ -42,7 +43,7 @@ class ClientController extends Controller
      */
     public function show(Client $client)
     {
-        return UserResource::make($client->loadMissing(['roles', 'specs', 'cases']));
+        return UserResource::make($client->loadMissing(['roles', 'cases']));
     }
 
     /**
@@ -56,7 +57,8 @@ class ClientController extends Controller
     {
         $validData = $request->validated();
         $client->update($validData);
-        return UserResource::make($client->refresh()->loadMissing(['roles', 'specs', 'cases']));
+        $client->cases()->syncWithoutDetaching($request->case);
+        return UserResource::make($client->refresh()->loadMissing(['roles', 'cases']));
     }
 
     /**

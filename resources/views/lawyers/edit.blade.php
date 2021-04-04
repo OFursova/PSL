@@ -17,6 +17,7 @@
     <form method="POST" action="/lawyers/{{$lawyer->id}}" enctype="multipart/form-data" class="flex items-center justify-between">
         @csrf
         <input name="_method" type="hidden" value="PUT">
+        <input name="id" type="hidden" value="{{$lawyer->id}}">
         <div class="w-1/3 flex flex-col items-center justify-start p-3 self-start">
         <!-- Avatar -->
             <x-label for="avatar" :value="__('Avatar:')" class="self-start" />
@@ -29,6 +30,12 @@
         <div>
             <x-label for="name" :value="__('Full name:')" />
             <x-input id="name" class="block mt-1 w-full" type="text" name="name" :value="$lawyer->name" required autofocus />
+        </div>
+
+        <!-- Password -->
+        <div>
+            <x-label for="password" :value="__('Password:')" />
+            <x-input id="password" class="block mt-1 w-full" type="password" name="password" autofocus />
         </div>
         
         <!-- Email -->
@@ -52,7 +59,7 @@
         <!-- Select for position -->
         <div>
             <x-label for="position" :value="__('Position:')" />
-            <x-select id="position" name="position_id" autocomplete="position" :collection="$positions" :selected="$lawyer->positions ? $lawyer->positions->pluck('name')->first() : null" />
+            <x-select id="position" name="position_id" autocomplete="position" :collection="$positions" :selected="$lawyer->position->name ?? null" />
         </div>
 
         <!-- Select for specialization -->

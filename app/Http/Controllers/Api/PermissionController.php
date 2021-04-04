@@ -3,12 +3,12 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\StoreSpecRequest;
-use App\Http\Resources\SpecializationResource;
-use App\Models\Spec;
+use App\Http\Requests\StorePermissionRequest;
+use App\Http\Resources\PermissionResource;
+use App\Models\Permission;
 use Illuminate\Support\Str;
 
-class SpecializationController extends Controller
+class PermissionController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -17,7 +17,7 @@ class SpecializationController extends Controller
      */
     public function index()
     {
-        return SpecializationResource::collection(Spec::paginate(10));
+        return PermissionResource::collection(Permission::paginate(10));
     }
 
     /**
@@ -26,50 +26,50 @@ class SpecializationController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StoreSpecRequest $request)
+    public function store(StorePermissionRequest $request)
     {
         $validData = $request->validated();
-        $spec = Spec::create($validData);
-        // return SpecializationResource::make($spec);
+        $permit = Permission::create($validData);
+        // return PermissionResource::make($permit);
         return redirect()->back();
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  \App\Models\Permission  $permission
      * @return \Illuminate\Http\Response
      */
-    public function show(Spec $spec)
+    public function show(Permission $permission)
     {
-        return SpecializationResource::make($spec);
+        return PermissionResource::make($permission);
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  \App\Models\Permission  $permission
      * @return \Illuminate\Http\Response
      */
-    public function update(StoreSpecRequest $request, Spec $spec)
+    public function update(StorePermissionRequest $request, Permission $permission)
     {
         $validData = $request->validated();
         $validData['slug'] ??  $validData['slug'] = Str::slug($validData['name'], '-');
-        $spec->update($validData);
-        // return SpecializationResource::make($spec->refresh());
+        $permission->update($validData);
+        // return PermissionResource::make($permission->refresh());
         return redirect()->back();
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  \App\Models\Permission  $permission
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Spec $spec)
+    public function destroy(Permission $permission)
     {
-        $spec->delete();
+        $permission->delete();
         // return response('deleted');
         return redirect()->back();
     }

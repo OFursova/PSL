@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreLawyerRequest;
+use App\Http\Requests\StoreUserRequest;
+use App\Http\Requests\UpdateUserRequest;
 use App\Models\Lawyer;
 use App\Models\LegalCase;
 use App\Models\Position;
@@ -27,7 +29,7 @@ class LawyerController extends Controller
         return view('admin.lawyers.create', compact('specs', 'cases', 'positions'));
     }
 
-    public function store(StoreLawyerRequest $request)
+    public function store(StoreUserRequest $request)
     {
         $validData = $request->validated();
         if(isset($validData['password'])) $validData['password'] = Hash::make($validData['password']);
@@ -54,7 +56,7 @@ class LawyerController extends Controller
         return view('admin.lawyers.edit', compact('lawyer', 'specs', 'cases', 'positions'));
     }
 
-    public function update(StoreLawyerRequest $request, Lawyer $lawyer)
+    public function update(UpdateUserRequest $request, Lawyer $lawyer)
     {
         $validData = $request->validated();
         $validData['password'] ? $validData['password'] = Hash::make($validData['password']) : $validData['password'] = $lawyer->password;
@@ -90,22 +92,24 @@ class LawyerController extends Controller
     public function editLawyer($id)
     {
         $lawyer = Lawyer::findOrFail($id);
-        $specs = Spec::all()->pluck('name');
-        return view('lawyers.edit', compact('lawyer', 'specs'));
+        $specs = Spec::all()->pluck('name', 'id');
+        $cases = LegalCase::all()->pluck('name', 'id');
+        $positions = Position::all()->pluck('name', 'id');
+        return view('lawyers.edit', compact('lawyer', 'specs', 'cases', 'positions'));
     }
 
-    public function saveChanges(StoreLawyerRequest $request, Lawyer $lawyer)
+    public function saveChanges(UpdateUserRequest $request, $id)
     {
         $validData = $request->validated();
+        $lawyer = Lawyer::findOrFail($id);
         $validData['password'] ? $validData['password'] = Hash::make($validData['password']) : $validData['password'] = $lawyer->password;
         if(isset($validData['avatar'])) $validData['avatar'] = parent::saveAvatar($request);
         
-        $lawyer = Lawyer::findOrFail($lawyer->id); 
         $lawyer->update($validData);
 
         $lawyer->specs()->syncWithoutDetaching($request->spec);
         $lawyer->cases()->syncWithoutDetaching($request->case);
-
+    
         return redirect('/home');   
     }
 

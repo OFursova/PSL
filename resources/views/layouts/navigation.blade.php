@@ -32,16 +32,18 @@
                     <x-nav-link href="/cases" :active="request()->routeIs('cases')">
                         {{ __('Cases') }}
                     </x-nav-link>
-                    @if (Auth::user()->roles->slug == 'client')
+                    @if (Auth::user()->roles->slug != 'admin')
                     <x-nav-link href="/lawyers" :active="request()->routeIs('lawyers')">
                         {{ __('Lawyers')}}
-                    </x-nav-link>
-                    <x-nav-link href="/contact" :active="request()->routeIs('contact')" class="mr-6">
-                        {{ __('Contact Us') }}
                     </x-nav-link>
                     @else
                     <x-nav-link href="/admin/lawyers" :active="request()->routeIs('admin-lawyers')">
                         {{ __('Lawyers') }}
+                    </x-nav-link>
+                    @endif
+                    @if (Auth::user()->roles->slug == 'client')
+                    <x-nav-link href="/contact" :active="request()->routeIs('contact')" class="mr-6">
+                        {{ __('Contact Us') }}
                     </x-nav-link>
                     @endif
                 </div>
@@ -106,16 +108,18 @@
             <x-responsive-nav-link href="/cases" :active="request()->routeIs('cases')">
                 {{ __('Cases') }}
             </x-responsive-nav-link>
-            @if (Auth::user()->roles->slug == 'client')
+            @if (Auth::user()->roles->slug != 'admin')
             <x-responsive-nav-link href="/lawyers" :active="request()->routeIs('lawyers')">
                 {{ __('Lawyers')}}
-            </x-responsive-nav-link>
-            <x-responsive-nav-link href="/contact" :active="request()->routeIs('contact')" class="mr-6">
-                {{ __('Contact Us') }}
             </x-responsive-nav-link>
             @else
             <x-responsive-nav-link href="/admin/lawyers" :active="request()->routeIs('admin-lawyers')">
                 {{ __('Lawyers') }}
+            </x-responsive-nav-link>
+            @endif
+            @if (Auth::user()->roles->slug == 'client')
+            <x-responsive-nav-link href="/contact" :active="request()->routeIs('contact')" class="mr-6">
+                {{ __('Contact Us') }}
             </x-responsive-nav-link>
             @endif
         </div>

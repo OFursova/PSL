@@ -14,7 +14,9 @@
         <div class="w-1/3">
                 <div class="flex flex-col items-center justify-center">
                     <img src="{{asset($lawyer->avatar)}}" alt="{{$lawyer->name}}" class="w-3/4 border">
+                    @if (Auth::user()->roles->slug == 'client')
                     <x-button-link href="/contact" class="my-3 text-center bg-yellow-500 hover:bg-yellow-700 active:bg-yellow-900">Contact {{$lawyer->name}}</x-button-link>
+                    @endif
                 </div>
         </div>
         <table class="table-auto min-w-max w-2/3 bg-white shadow-md rounded">

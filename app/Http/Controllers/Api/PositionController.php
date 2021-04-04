@@ -3,12 +3,12 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\StoreSpecRequest;
-use App\Http\Resources\SpecializationResource;
-use App\Models\Spec;
-use Illuminate\Support\Str;
+use App\Http\Requests\StorePositionRequest;
+use App\Http\Resources\PositionResource;
+use App\Models\Position;
+use Illuminate\Http\Request;
 
-class SpecializationController extends Controller
+class PositionController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -17,7 +17,7 @@ class SpecializationController extends Controller
      */
     public function index()
     {
-        return SpecializationResource::collection(Spec::paginate(10));
+        return PositionResource::collection(Position::paginate(10));
     }
 
     /**
@@ -26,50 +26,49 @@ class SpecializationController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StoreSpecRequest $request)
+    public function store(StorePositionRequest $request)
     {
         $validData = $request->validated();
-        $spec = Spec::create($validData);
-        // return SpecializationResource::make($spec);
+        $position = Position::create($validData);
+        // return PositionResource::make($position);
         return redirect()->back();
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  \App\Models\Position  $position
      * @return \Illuminate\Http\Response
      */
-    public function show(Spec $spec)
+    public function show(Position $position)
     {
-        return SpecializationResource::make($spec);
+        return PositionResource::make($position);
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  \App\Models\Position  $position
      * @return \Illuminate\Http\Response
      */
-    public function update(StoreSpecRequest $request, Spec $spec)
+    public function update(StorePositionRequest $request, Position $position)
     {
         $validData = $request->validated();
-        $validData['slug'] ??  $validData['slug'] = Str::slug($validData['name'], '-');
-        $spec->update($validData);
-        // return SpecializationResource::make($spec->refresh());
+        $position->update($validData);
+        // return PositionResource::make($position->refresh());
         return redirect()->back();
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  \App\Models\Position  $position
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Spec $spec)
+    public function destroy(Position $position)
     {
-        $spec->delete();
+        $position->delete();
         // return response('deleted');
         return redirect()->back();
     }

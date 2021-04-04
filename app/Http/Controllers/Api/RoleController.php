@@ -1,10 +1,12 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\StoreRoleRequest;
+use App\Http\Resources\RoleResource;
 use App\Models\Role;
-use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 class RoleController extends Controller
 {
@@ -15,18 +17,7 @@ class RoleController extends Controller
      */
     public function index()
     {
-        $roles = Role::get();
-        return view('admin.roles.index', compact('roles'));
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
+        return RoleResource::collection(Role::paginate(10));
     }
 
     /**
@@ -35,9 +26,12 @@ class RoleController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreRoleRequest $request)
     {
-        //
+        $validData = $request->validated();
+        $role = Role::create($validData);
+        //return RoleResource::make($role);
+        return redirect()->back();
     }
 
     /**
@@ -48,18 +42,7 @@ class RoleController extends Controller
      */
     public function show(Role $role)
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Role  $role
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Role $role)
-    {
-        //
+        return RoleResource::make($role);
     }
 
     /**
@@ -69,9 +52,13 @@ class RoleController extends Controller
      * @param  \App\Models\Role  $role
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Role $role)
+    public function update(StoreRoleRequest $request, Role $role)
     {
-        //
+        $validData = $request->validated();
+        $validData['slug'] ??  $validData['slug'] = Str::slug($validData['name'], '-');
+        $role->update($validData);
+        //return RoleResource::make($role->refresh());
+        return redirect()->back();
     }
 
     /**
@@ -82,6 +69,8 @@ class RoleController extends Controller
      */
     public function destroy(Role $role)
     {
-        //
+        $role->delete();
+        //return response('deleted');
+        return redirect()->back();
     }
 }

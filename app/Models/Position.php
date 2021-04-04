@@ -9,6 +9,10 @@ class Position extends Model
 {
     use HasFactory;
 
+    protected $fillable = ['name'];
+
+    public $timestamps = false;
+
     public function lawyers()
     {        
         return $this->hasMany(Lawyer::class);

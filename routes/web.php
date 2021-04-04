@@ -42,20 +42,24 @@ Route::middleware(['auth'])->group(function(){
     Route::get('/lawyers', [LawyerController::class, 'getAll'])->name('lawyers');
     Route::get('/lawyers/{id}', [LawyerController::class, 'getOne']);
     Route::get('/lawyers/{id}/edit', [LawyerController::class, 'editLawyer'])->middleware('role:lawyer');
-    Route::post('/lawyers/{id}', [LawyerController::class, 'saveChanges'])->middleware('role:lawyer');
+    Route::put('/lawyers/{id}', [LawyerController::class, 'saveChanges'])->middleware('role:lawyer');
     Route::post('/lawyers/filter', [LawyerController::class, 'filter']);
-    Route::get('/contact', [MainController::class, 'contact'])->name('contact');
-    Route::post('/contact', [MainController::class, 'getContacts']);
+    Route::get('/contact', [MainController::class, 'contact'])->name('contact')->middleware('role:client');
+    Route::post('/contact', [MainController::class, 'getContacts'])->middleware('role:client');
 });
 
 /* ===== ADMIN PANEL ===== */
 
 Route::middleware(['auth', 'role:admin'])->prefix('admin')->group(function(){
     Route::get('/dashboard', [AdminController::class, 'index'])->name('dashboard');
-    Route::resource('/roles', RoleController::class);
-    Route::resource('/permissions', PermissionController::class);
     Route::resource('/lawyers', LawyerController::class)->name('get', 'admin-lawyers');
     Route::post('/lawyers/filter', [LawyerController::class, 'adminFilter']);
+    Route::get('/{name}/assign', [AdminController::class, 'assign']);
+    Route::post('/assign', [AdminController::class, 'saveAssignment']);
+    Route::get('/permissions', [AdminController::class, 'permissions']);
+    Route::get('/positions', [AdminController::class, 'positions']);
+    Route::get('/roles', [AdminController::class, 'roles']);
+    Route::get('/specs', [AdminController::class, 'specs']);
 });
 
 /* ====== TESTING ====== */

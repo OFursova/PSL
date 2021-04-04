@@ -8,6 +8,7 @@ use App\Http\Requests\UpdateUserRequest;
 use App\Http\Resources\UserResource;
 use App\Models\Lawyer;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 class LawyerController extends Controller
 {
@@ -19,6 +20,7 @@ class LawyerController extends Controller
     public function index()
     {
         return UserResource::collection(Lawyer::with('roles', 'specs', 'cases')->get());
+
     }
 
     /**
@@ -30,7 +32,11 @@ class LawyerController extends Controller
     public function store(StoreUserRequest $request)
     {
         $validData = $request->validated();
+        if(isset($validData['password'])) $validData['password'] = Hash::make($validData['password']);
+        if(isset($validData['avatar'])) $validData['avatar'] = parent::saveAvatar($request);
         $lawyer = Lawyer::create($validData);
+        $lawyer->specs()->syncWithoutDetaching($request->spec);
+        $lawyer->cases()->syncWithoutDetaching($request->case);
         return UserResource::make($lawyer->loadMissing(['roles', 'specs', 'cases']));
     }
 
@@ -55,7 +61,11 @@ class LawyerController extends Controller
     public function update(UpdateUserRequest $request, Lawyer $lawyer)
     {
         $validData = $request->validated();
+        $validData['password'] ? $validData['password'] = Hash::make($validData['password']) : $validData['password'] = $lawyer->password;
+        if(isset($validData['avatar'])) $validData['avatar'] = parent::saveAvatar($request);
         $lawyer->update($validData);
+        $lawyer->specs()->syncWithoutDetaching($request->spec);
+        $lawyer->cases()->syncWithoutDetaching($request->case);
         return UserResource::make($lawyer->refresh()->loadMissing(['roles', 'specs', 'cases']));
     }
 

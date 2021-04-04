@@ -17,6 +17,7 @@
     <form method="POST" action="/admin/lawyers/{{$lawyer->id}}" enctype="multipart/form-data" class="flex items-center justify-between">
         @csrf
         <input name="_method" type="hidden" value="PUT">
+        <input name="id" type="hidden" value="{{$lawyer->id}}">
         <div class="w-1/3 flex flex-col items-center justify-start p-3 self-start">
         <!-- Avatar -->
             <x-label for="avatar" :value="__('Avatar:')" class="self-start" />

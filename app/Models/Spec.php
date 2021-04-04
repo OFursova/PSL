@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
 
 class Spec extends Model
 {
@@ -11,6 +12,16 @@ class Spec extends Model
 
     protected $fillable = ['name', 'slug'];
     protected $table = 'specializations';
+    public $timestamps = false;
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($query) {
+            $query->slug = request()->filled('slug') ? request()->slug : Str::slug(request()->name, '-');
+        });
+    }
 
     public function lawyers()
     {
@@ -25,14 +36,4 @@ class Spec extends Model
         return $this->hasMany(SpecializationsAttachment::class);
     }
 
-    // public function lawyersSpec()
-    // {
-    //     return $this->belongsToMany(Lawyer::class, 'lawyers_specializations');
-
-    // }
-
-    // public function casesSpec()
-    // {
-    //     return $this->belongsToMany(LegalCase::class, 'cases_specializations');
-    // }
 }

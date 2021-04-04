@@ -5,33 +5,130 @@
         </h2>
     </x-slot>
 
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="p-6 bg-white border-b border-gray-200">
-                    You're logged in!
-                </div>
-            </div>
-        </div>
+    <div class="px-6 py-3 flex items-start justify-around flex-wrap w-screen">
+        <x-admin-block x-data="roles()" x-init="fetchRoles()">
+            <x-slot name="title">Roles</x-slot><x-slot name="action">roles</x-slot>
+            <ol>
+            <template x-if="!nothingToShow" x-for="role in roles" :key="role.id">
+                <li class="list-decimal">
+                    <span x-text="role.name"></span>
+                </li>
+            </template>
+            </ol>
+        </x-admin-block>
+        <x-admin-block x-data="permits()" x-init="fetchPermits()">
+            <x-slot name="title">Permissions</x-slot><x-slot name="action">permissions</x-slot>
+            <ol>
+                <template x-if="!nothingToShow" x-for="permit in permits" :key="permit.id">
+                    <li class="list-decimal">
+                        <span x-text="permit.name"></span>
+                    </li>
+                </template>
+                </ol>
+        </x-admin-block>
+        <x-admin-block x-data="positions()" x-init="fetchPositions()">
+            <x-slot name="title">Positions</x-slot><x-slot name="action">positions</x-slot>
+            <ol>
+                <template x-if="!nothingToShow" x-for="position in positions" :key="position.id">
+                    <li class="list-decimal">
+                        <span x-text="position.name"></span>
+                    </li>
+                </template>
+                </ol>
+        </x-admin-block>
+        <x-admin-block x-data="specs()" x-init="fetchSpecs()">
+            <x-slot name="title">Specializations</x-slot><x-slot name="action">specs</x-slot>
+            <ol>
+                <template x-if="!nothingToShow" x-for="spec in specs" :key="spec.id">
+                    <li class="list-decimal">
+                        <span x-text="spec.name"></span>
+                    </li>
+                </template>
+                </ol>
+        </x-admin-block>
     </div>
+            
+    <script>
+        let token = '{{Auth::user()->api_token}}';
 
-    <div class="px-6 py-3 flex items-center justify-around flex-wrap w-screen">
-        <div class="w-2/5 m-2 flex flex-col items-center justify-between bg-gray-200 rounded shadow">
-            <h2 class="m-3 text-center font-semibold text-3xl">Roles</h2>
-            list
-            <div class="w-full flex items-center justify-around">
-                <x-button-link href="/admin/roles" class="m-3 bg-green-500 hover:bg-green-700 active:bg-green-900">Modify roles</x-button-link>
-                <x-button-link href="/admin/roles/assign" class="m-3 bg-yellow-500 hover:bg-yellow-700 active:bg-yellow-900">Assign roles</x-button-link>
-            </div>
-        </div>
-        <div class="w-2/5 m-2 flex flex-col items-center justify-around bg-gray-200 rounded shadow">
-            <h2 class="m-3 text-center font-semibold text-3xl">Permissions</h2>
-            list
-            <div class="w-full flex items-center justify-between">
-                <x-button-link href="/admin/permissions" class="m-3 bg-green-500 hover:bg-green-700 active:bg-green-900">Modify permissions</x-button-link>
-                <x-button-link href="/admin/permissions/assign" class="m-3 bg-yellow-500 hover:bg-yellow-700 active:bg-yellow-900">Assign permissions</x-button-link>
-            </div>
-        </div>
-    </div>
+        function roles() {
+            return {
+                roles: [],
+                nothingToShow: true,
+                fetchRoles: function () {
+                    this.error = this.roles = null;
+                    axios
+                        .get('/api/roles?api_token='+token)
+                        .then((response) => {
+                            if(response.data.data == false) this.nothingToShow = true;
+                            else this.nothingToShow = false;
+                            this.roles = response.data.data;
+                        })
+                        .catch((error) => {
+                            this.error = error.response.data.message || error.message;
+                        });
+                },
+            };
+        }
 
+        function permits() {
+            return {
+                permits: [],
+                nothingToShow: true,
+                fetchPermits: function () {
+                    this.error = this.permits = null;
+                    axios
+                        .get('/api/permissions?api_token='+token)
+                        .then((response) => {
+                            if(response.data.data == false) this.nothingToShow = true;
+                            else this.nothingToShow = false;
+                            this.permits = response.data.data;
+                        })
+                        .catch((error) => {
+                            this.error = error.response.data.message || error.message;
+                        });
+                },
+            };
+        }
+
+        function positions() {
+            return {
+                positions: [],
+                nothingToShow: true,
+                fetchPositions: function () {
+                    this.error = this.positions = null;
+                    axios
+                        .get('/api/positions?api_token='+token)
+                        .then((response) => {
+                            if(response.data.data == false) this.nothingToShow = true;
+                            else this.nothingToShow = false;
+                            this.positions = response.data.data;
+                        })
+                        .catch((error) => {
+                            this.error = error.response.data.message || error.message;
+                        });
+                },
+            };
+        }
+
+        function specs() {
+            return {
+                specs: [],
+                nothingToShow: true,
+                fetchSpecs: function () {
+                    this.error = this.specs = null;
+                    axios
+                        .get('/api/specializations?api_token='+token)
+                        .then((response) => {
+                            if(response.data.data == false) this.nothingToShow = true;
+                            else this.nothingToShow = false;
+                            this.specs = response.data.data;
+                        })
+                        .catch((error) => {
+                            this.error = error.response.data.message || error.message;
+                        });
+                },
+            };
+        }
+</script>
 </x-app-layout>

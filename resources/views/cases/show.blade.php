@@ -26,6 +26,7 @@
                 </x-show-page-tr>
                 <x-show-page-tr><x-slot name="title">Leading lawyer:</x-slot>{{$case->lawyers ? $case->lawyers->pluck('name')->join(', ') : 'Yet none'}}</x-show-page-tr>
                 <x-show-page-tr><x-slot name="title">Client info:</x-slot>{{$case->clients ? $case->clients->pluck('name')->join(', ') : ''}}</x-show-page-tr>
+                @if (auth()->user()->roles->slug != 'client')
                 <tr class="border-b border-gray-300 hover:bg-gray-100">
                     <td class="py-3 px-6 text-center bg-gray-200 text-gray-600 uppercase text-sm leading-normal">
                         {!! Form::open(['url' => '/cases/'.$case->id, 'method' => 'delete']) !!}
@@ -40,6 +41,7 @@
                         </div>
                     </td>
                 </tr>
+                @endif
             </tbody>
         </table>
     </div>

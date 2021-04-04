@@ -17,7 +17,7 @@ class RoleMiddleware
      */
     public function handle(Request $request, Closure $next, $role)
     {
-        if(!Auth::user()->roles->slug == $role)
+        if(auth()->user()->roles->slug != $role)
         {
             return redirect('/');
             //abort(404);

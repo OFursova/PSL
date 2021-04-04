@@ -14,7 +14,6 @@
         </x-button>
         </form>
 
-        {{-- only for lawyers and admin --}}
         <x-button-link href="{{asset('admin/lawyers/create')}}" class="ml-4 my-1 self-end bg-green-500 hover:bg-green-700 active:bg-green-900">
                 {{ __('Add new lawyer') }}
         </x-button-link>
